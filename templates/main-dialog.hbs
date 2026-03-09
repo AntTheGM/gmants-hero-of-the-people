@@ -1,12 +1,89 @@
 <form class="hero-of-the-people-form">
+  {{!-- Voting Section (hidden in hype-only mode) --}}
+  {{#unless hypeOnly}}
   <div class="hero-of-the-people-section">
     <div class="hero-of-the-people-section-header">
       <label>{{localize "HERO_OF_THE_PEOPLE.Section.Vote"}}</label>
+      <span class="hero-of-the-people-countdown">{{secondsLeft}}s</span>
     </div>
-    <!-- Player list and voting UI goes here -->
+
+    <div class="hero-of-the-people-player-list">
+      {{!-- Random option --}}
+      <div class="hero-of-the-people-player-entry" data-user-id="random">
+        <div class="hero-of-the-people-player-info">
+          <i class="fas fa-dice hero-of-the-people-player-icon"></i>
+          <span class="hero-of-the-people-player-name">{{localize "HERO_OF_THE_PEOPLE.Button.Random"}}</span>
+        </div>
+      </div>
+
+      {{#each players}}
+      <div class="hero-of-the-people-player-entry {{#if greyed}}greyed-out{{/if}}" data-user-id="{{userId}}">
+        <div class="hero-of-the-people-player-info">
+          <img class="hero-of-the-people-avatar" src="{{img}}" alt="{{characterName}}" />
+          <div class="hero-of-the-people-player-names">
+            <span class="hero-of-the-people-character-name">{{characterName}}</span>
+            <span class="hero-of-the-people-player-subname">{{playerName}}</span>
+          </div>
+        </div>
+        {{#if greyed}}
+        <span class="hero-of-the-people-greyed-reason">{{reason}}</span>
+        {{/if}}
+      </div>
+      {{/each}}
+
+      {{#unless players.length}}
+      <div class="hero-of-the-people-empty">
+        {{localize "HERO_OF_THE_PEOPLE.Status.NoPlayers"}}
+      </div>
+      {{/unless}}
+    </div>
+  </div>
+  {{/unless}}
+
+  {{!-- Hero Hype Section --}}
+  <div class="hero-of-the-people-section hero-of-the-people-hype-section">
+    <div class="hero-of-the-people-section-header">
+      <label><i class="fas fa-fire"></i> {{localize "HERO_OF_THE_PEOPLE.Hype.Title"}}</label>
+    </div>
+
+    {{!-- Hype target selector --}}
+    <div class="hero-of-the-people-hype-target-row">
+      <label>{{localize "HERO_OF_THE_PEOPLE.Hype.For"}}</label>
+      <select name="hype-target" class="hero-of-the-people-hype-target-select">
+        <option value="">{{localize "HERO_OF_THE_PEOPLE.Hype.SelectPlayer"}}</option>
+        {{#each hypeTargets}}
+        <option value="{{userId}}">{{name}}</option>
+        {{/each}}
+      </select>
+    </div>
+
+    {{!-- Tag checkboxes --}}
+    <div class="hero-of-the-people-hype-tags">
+      {{#each hypeTags}}
+      <label class="hero-of-the-people-checkbox hero-of-the-people-hype-tag">
+        <input type="checkbox" name="hype-{{key}}" />
+        <i class="{{icon}}"></i>
+        {{localizedLabel}}
+      </label>
+      {{/each}}
+    </div>
+
+    {{!-- Free-text kudos --}}
+    <textarea name="hype-message" class="hero-of-the-people-hype-textarea"
+      placeholder="{{localize "HERO_OF_THE_PEOPLE.Hype.Placeholder"}}"
+      rows="2"></textarea>
   </div>
 
-  <button type="button" class="hero-of-the-people-primary-btn" data-action="submit">
-    <i class="fas fa-medal"></i> {{localize "HERO_OF_THE_PEOPLE.Button.CastVote"}}
-  </button>
+  {{!-- Buttons --}}
+  {{#unless submitted}}
+    {{#if hypeOnly}}
+    <button type="button" class="hero-of-the-people-primary-btn" data-action="submitHype">
+      <i class="fas fa-fire"></i> {{localize "HERO_OF_THE_PEOPLE.Hype.Send"}}
+    </button>
+    {{else}}
+    <button type="button" class="hero-of-the-people-primary-btn" data-action="submit">
+      <i class="fas fa-medal"></i> {{localize "HERO_OF_THE_PEOPLE.Button.CastVote"}}
+    </button>
+    {{/if}}
+  {{/unless}}
 </form>

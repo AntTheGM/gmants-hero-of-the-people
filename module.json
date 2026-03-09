@@ -22,6 +22,25 @@
       "path": "lang/en.json"
     }
   ],
+  "packs": [
+    {
+      "name": "hero-of-the-people-macros",
+      "label": "Hero of the People Macros",
+      "path": "packs/hero-of-the-people-macros",
+      "type": "Macro",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      }
+    }
+  ],
+  "packFolders": [
+    {
+      "name": "Hero of the People",
+      "sorting": "m",
+      "packs": ["hero-of-the-people-macros"]
+    }
+  ],
   "socket": true,
   "flags": {
     "hotReload": true

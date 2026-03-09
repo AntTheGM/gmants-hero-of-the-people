@@ -22,4 +22,11 @@ export function registerSettings() {
     default: {},
     type: Object,
   });
+
+  game.settings.register(MODULE_ID, "sessionWinners", {
+    scope: "world",
+    config: false,
+    default: [],
+    type: Array,
+  });
 }

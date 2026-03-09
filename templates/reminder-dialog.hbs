@@ -1,0 +1,44 @@
+<div class="hero-of-the-people-form">
+  <div class="hero-of-the-people-reminder-quote">
+    <i class="fas fa-quote-left"></i> {{quote}}
+  </div>
+
+  {{#if elapsed}}
+  <div class="hero-of-the-people-elapsed">
+    <i class="fas fa-clock"></i>
+    {{localize "HERO_OF_THE_PEOPLE.Time.Elapsed"}}: <strong>{{elapsed}}</strong>
+  </div>
+  {{/if}}
+
+  <button type="button" class="hero-of-the-people-primary-btn" data-action="initiate">
+    <i class="fas fa-medal"></i> {{localize "HERO_OF_THE_PEOPLE.Button.Initiate"}}
+  </button>
+
+  <div class="hero-of-the-people-section">
+    <div class="hero-of-the-people-section-header">
+      <label>{{localize "HERO_OF_THE_PEOPLE.Button.Snooze"}}</label>
+    </div>
+    <div class="hero-of-the-people-snooze-buttons">
+      <button type="button" class="hero-of-the-people-secondary-btn" data-action="snooze1">
+        {{localize "HERO_OF_THE_PEOPLE.Snooze.1min"}}
+      </button>
+      <button type="button" class="hero-of-the-people-secondary-btn" data-action="snooze5">
+        {{localize "HERO_OF_THE_PEOPLE.Snooze.5min"}}
+      </button>
+      <button type="button" class="hero-of-the-people-secondary-btn" data-action="snooze10">
+        {{localize "HERO_OF_THE_PEOPLE.Snooze.10min"}}
+      </button>
+      <button type="button" class="hero-of-the-people-secondary-btn hero-of-the-people-skip-btn" data-action="skipSession">
+        <i class="fas fa-forward"></i> {{localize "HERO_OF_THE_PEOPLE.Button.SkipSession"}}
+      </button>
+    </div>
+  </div>
+
+  {{#if hasWinners}}
+  <div class="hero-of-the-people-section">
+    <button type="button" class="hero-of-the-people-secondary-btn" data-action="clearHistory">
+      <i class="fas fa-eraser"></i> Clear Award History ({{winnerCount}})
+    </button>
+  </div>
+  {{/if}}
+</div>
