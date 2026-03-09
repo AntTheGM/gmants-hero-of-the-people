@@ -1,0 +1,17 @@
+node_modules/
+packs/**/*.ldb
+packs/**/*.log
+packs/**/CURRENT
+packs/**/LOCK
+packs/**/LOG
+packs/**/LOG.old
+packs/**/MANIFEST-*
+.DS_Store
+Thumbs.db
+*.log
+
+# Development docs — not shipped with module
+*.md
+Reference/
+Implementation/
+CLAUDE.md

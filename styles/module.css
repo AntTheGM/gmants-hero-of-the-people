@@ -1,0 +1,177 @@
+/* ============================================
+   Hero of the People — VTTools by GM Ant
+   ============================================ */
+
+/* --- Color Palette (scoped to module windows) --- */
+.hero-of-the-people {
+  --hero-of-the-people-brand: #a44;
+  --hero-of-the-people-gold: #b8860b;
+  --hero-of-the-people-gold-light: #daa520;
+  --hero-of-the-people-success: #4a4;
+  --hero-of-the-people-purple: #8a7ec0;
+  --hero-of-the-people-purple-bg: rgba(90, 78, 140, 0.08);
+  --hero-of-the-people-purple-border: rgba(90, 78, 140, 0.15);
+  --hero-of-the-people-warning: #c5a028;
+
+  --hero-of-the-people-border: rgba(128, 128, 128, 0.2);
+  --hero-of-the-people-border-light: rgba(128, 128, 128, 0.15);
+  --hero-of-the-people-border-hover: rgba(128, 128, 128, 0.1);
+
+  --hero-of-the-people-bg-inset: rgba(0, 0, 0, 0.05);
+  --hero-of-the-people-bg-subtle: rgba(0, 0, 0, 0.03);
+  --hero-of-the-people-bg-faint: rgba(0, 0, 0, 0.02);
+  --hero-of-the-people-bg-hover: rgba(0, 0, 0, 0.06);
+  --hero-of-the-people-bg-selected: rgba(0, 0, 0, 0.04);
+  --hero-of-the-people-bg-border: rgba(0, 0, 0, 0.08);
+  --hero-of-the-people-bg-shadow: rgba(0, 0, 0, 0.15);
+  --hero-of-the-people-bg-shadow-dark: rgba(0, 0, 0, 0.2);
+}
+
+/* --- Branding Header --- */
+a.hero-of-the-people-branding {
+  margin-left: auto;
+  font-style: italic;
+  color: var(--hero-of-the-people-brand);
+  font-size: 0.75rem;
+  text-decoration: none;
+}
+
+a.hero-of-the-people-branding:hover {
+  text-decoration: underline;
+  color: var(--hero-of-the-people-gold-light);
+}
+
+/* --- Form Container --- */
+.hero-of-the-people-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.25rem;
+  font-size: 0.85rem;
+}
+
+/* --- Sections --- */
+.hero-of-the-people-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.hero-of-the-people-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.hero-of-the-people-section-header label {
+  font-weight: bold;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.7;
+}
+
+/* --- Primary Button --- */
+@keyframes hero-of-the-people-shimmer {
+  0% { background-position: 200% center; }
+  100% { background-position: -200% center; }
+}
+
+.hero-of-the-people .hero-of-the-people-primary-btn {
+  font-weight: bold;
+  font-size: 1rem;
+  padding: 0.5rem;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  background:
+    linear-gradient(100deg, transparent 30%, rgba(184, 134, 11, 0.08) 50%, transparent 70%),
+    linear-gradient(to bottom, rgba(184, 134, 11, 0.15), rgba(184, 134, 11, 0.05));
+  background-size: 200% 100%, 100% 100%;
+  animation: hero-of-the-people-shimmer 4s ease-in-out infinite;
+  transition: box-shadow 0.2s, background 0.2s;
+}
+
+.hero-of-the-people .hero-of-the-people-primary-btn:hover {
+  box-shadow: 0 0 8px rgba(184, 134, 11, 0.3);
+  background:
+    linear-gradient(100deg, transparent 30%, rgba(184, 134, 11, 0.12) 50%, transparent 70%),
+    linear-gradient(to bottom, rgba(184, 134, 11, 0.22), rgba(184, 134, 11, 0.1));
+  background-size: 200% 100%, 100% 100%;
+}
+
+.hero-of-the-people .hero-of-the-people-primary-btn:active {
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.4), 0 0 12px rgba(184, 134, 11, 0.4);
+  background:
+    linear-gradient(to bottom, rgba(184, 134, 11, 0.08), rgba(184, 134, 11, 0.2));
+}
+
+.hero-of-the-people-primary-btn i {
+  margin-right: 0.35rem;
+}
+
+/* --- Player List (Voting UI) --- */
+.hero-of-the-people-player-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  border: 1px solid var(--hero-of-the-people-border-light);
+  border-radius: 4px;
+  padding: 0.35rem;
+  background: var(--hero-of-the-people-bg-faint);
+}
+
+.hero-of-the-people-player-entry {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.2rem 0.35rem;
+  border-radius: 3px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.hero-of-the-people-player-entry:hover {
+  background: var(--hero-of-the-people-border-hover);
+}
+
+.hero-of-the-people-player-entry.selected {
+  background: var(--hero-of-the-people-bg-selected);
+  border: 1px solid var(--hero-of-the-people-gold);
+}
+
+.hero-of-the-people-player-entry.greyed-out {
+  opacity: 0.4;
+  text-decoration: line-through;
+  cursor: not-allowed;
+}
+
+/* --- Disabled State --- */
+.hero-of-the-people-disabled {
+  opacity: 0.5;
+}
+
+.hero-of-the-people-disabled,
+.hero-of-the-people-disabled * {
+  cursor: not-allowed !important;
+}
+
+/* --- Checkbox --- */
+.hero-of-the-people-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.hero-of-the-people-checkbox input[type="checkbox"] {
+  margin: 0;
+  cursor: pointer;
+}
+
+/* --- Empty State --- */
+.hero-of-the-people-empty {
+  text-align: center;
+  opacity: 0.5;
+  font-style: italic;
+  padding: 1rem 0;
+}
