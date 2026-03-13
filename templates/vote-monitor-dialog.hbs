@@ -4,7 +4,7 @@
 
   <div class="hero-of-the-people-monitor-header">
     <i class="fas fa-poll"></i> {{localize "HERO_OF_THE_PEOPLE.Monitor.InProgress"}}
-    <span class="hero-of-the-people-monitor-timer">{{secondsLeft}}s</span>
+    {{#if hasTimer}}<span class="hero-of-the-people-monitor-timer">{{secondsLeft}}s</span>{{/if}}
   </div>
 
   {{!-- Vote progress bar --}}
@@ -36,28 +36,6 @@
       {{/each}}
     </div>
   </div>
-
-  {{!-- GM Vote section --}}
-  {{#unless gmVoted}}
-  <div class="hero-of-the-people-section hero-of-the-people-gm-vote-section">
-    <div class="hero-of-the-people-section-header">
-      <label>{{localize "HERO_OF_THE_PEOPLE.Monitor.YourVote"}}</label>
-    </div>
-    <div class="hero-of-the-people-gm-vote-row">
-      <select class="hero-of-the-people-gm-vote-select">
-        <option value="random" selected>{{localize "HERO_OF_THE_PEOPLE.Button.Random"}}</option>
-        {{#each candidates}}
-        <option value="{{userId}}" {{#if greyed}}disabled{{/if}}>
-          {{characterName}} ({{playerName}}){{#if reason}} — {{reason}}{{/if}}
-        </option>
-        {{/each}}
-      </select>
-      <button type="button" class="hero-of-the-people-secondary-btn" data-action="castGMVote">
-        <i class="fas fa-vote-yea"></i> {{localize "HERO_OF_THE_PEOPLE.Monitor.CastVote"}}
-      </button>
-    </div>
-  </div>
-  {{/unless}}
 
   {{!-- End Voting button --}}
   <button type="button" class="hero-of-the-people-primary-btn" data-action="endVoting">
@@ -149,7 +127,7 @@
     <div class="hero-of-the-people-override-row">
       <select class="hero-of-the-people-override-select">
         {{#each overrideCandidates}}
-        <option value="{{userId}}" {{#if isWinner}}selected{{/if}}>{{name}}</option>
+        <option value="{{actorId}}" {{#if isWinner}}selected{{/if}}>{{name}}</option>
         {{/each}}
       </select>
       <button type="button" class="hero-of-the-people-secondary-btn" data-action="override">

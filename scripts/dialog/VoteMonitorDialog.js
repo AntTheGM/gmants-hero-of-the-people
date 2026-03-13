@@ -1,15 +1,10 @@
 import { MODULE_ID } from "../const.js";
-import { getPlayerCharacter } from "../utils.js";
+import { getPlayerCharacter, getOwnerName, formatTargetName, getPlayerCharacterActors, HYPE_TAGS } from "../utils.js";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
-/** Tag display info for hype entries */
-const HYPE_TAG_DISPLAY = {
-  roleplay: { icon: "fas fa-theater-masks", label: "HERO_OF_THE_PEOPLE.Hype.Roleplay" },
-  tactical: { icon: "fas fa-chess-knight", label: "HERO_OF_THE_PEOPLE.Hype.Tactical" },
-  puzzle: { icon: "fas fa-puzzle-piece", label: "HERO_OF_THE_PEOPLE.Hype.Puzzle" },
-  helper: { icon: "fas fa-hands-helping", label: "HERO_OF_THE_PEOPLE.Hype.Helper" },
-};
+/** Lookup map from tag key to {icon, label} for display purposes. */
+const HYPE_TAGS_BY_KEY = Object.fromEntries(HYPE_TAGS.map((t) => [t.key, { icon: t.icon, label: t.label }]));
 
 /**
  * GM-only dialog that monitors an active vote and then displays results.
@@ -27,7 +22,6 @@ export class VoteMonitorDialog extends HandlebarsApplicationMixin(ApplicationV2)
     },
     position: { width: 420, height: "auto" },
     actions: {
-      castGMVote: VoteMonitorDialog.#onCastGMVote,
       endVoting: VoteMonitorDialog.#onEndVoting,
       accept: VoteMonitorDialog.#onAccept,
       override: VoteMonitorDialog.#onOverride,
@@ -55,23 +49,17 @@ export class VoteMonitorDialog extends HandlebarsApplicationMixin(ApplicationV2)
   /** @type {number} Expected number of voters */
   #expectedCount = 0;
 
-  /** @type {boolean} Whether the GM has cast their vote */
-  #gmVoted = false;
-
   /** @type {object|null} Results from VoteCollector */
   #results = null;
 
   /** @type {object[]} Collected hype entries */
   #hypeEntries = [];
 
-  /** @type {number} Countdown seconds */
-  #secondsLeft = 60;
+  /** @type {number|null} Countdown seconds (null = no timer) */
+  #secondsLeft = null;
 
   /** @type {number|null} Countdown interval ID */
   #countdownInterval = null;
-
-  /** @type {Function} Called with (targetId) when GM casts their vote */
-  #onGMVoteCallback;
 
   /** @type {Function} Called when GM ends voting early */
   #onEndVotingCallback;
@@ -82,16 +70,14 @@ export class VoteMonitorDialog extends HandlebarsApplicationMixin(ApplicationV2)
   /**
    * @param {object} options
    * @param {number} options.expectedCount - Number of expected voters
-   * @param {number} [options.timeoutSeconds=60] - Voting timeout
-   * @param {Function} options.onGMVote - Called with target user ID when GM votes
+   * @param {number|null} [options.timeoutSeconds=120] - Voting timeout, or null for no timer
    * @param {Function} options.onEndVoting - Called when GM ends voting early
-   * @param {Function} options.onAccept - Called with final winner user ID
+   * @param {Function} options.onAccept - Called with final winner actor ID
    */
-  constructor({ expectedCount, timeoutSeconds = 60, onGMVote, onEndVoting, onAccept }) {
+  constructor({ expectedCount, timeoutSeconds = 120, onEndVoting, onAccept }) {
     super();
     this.#expectedCount = expectedCount;
     this.#secondsLeft = timeoutSeconds;
-    this.#onGMVoteCallback = onGMVote;
     this.#onEndVotingCallback = onEndVoting;
     this.#onAcceptCallback = onAccept;
   }
@@ -140,12 +126,12 @@ export class VoteMonitorDialog extends HandlebarsApplicationMixin(ApplicationV2)
       context.voteCount = this.#votedIds.size;
       context.expectedCount = this.#expectedCount;
       context.secondsLeft = this.#secondsLeft;
-      context.gmVoted = this.#gmVoted;
+      context.hasTimer = this.#secondsLeft != null;
       context.progressPct = this.#expectedCount > 0
         ? Math.round((this.#votedIds.size / this.#expectedCount) * 100)
         : 0;
 
-      // Build expected voter list with status (non-GM players only)
+      // Build voter list with status (non-GM players only, active ones can vote)
       context.voters = game.users
         .filter((u) => !u.isGM && u.active && getPlayerCharacter(u))
         .map((u) => {
@@ -159,51 +145,29 @@ export class VoteMonitorDialog extends HandlebarsApplicationMixin(ApplicationV2)
           };
         });
 
-      // Build candidate list for GM vote (non-GM active players with characters)
-      const sessionWinners = game.settings.get(MODULE_ID, "sessionWinners");
-      context.candidates = game.users
-        .filter((u) => !u.isGM && u.active && getPlayerCharacter(u))
-        .map((u) => {
-          const actor = getPlayerCharacter(u);
-          const isSessionWinner = sessionWinners.includes(u.id);
-          const isMaxed = this.#isAtMax(actor);
-          const greyed = isSessionWinner || isMaxed;
-          let reason = "";
-          if (isSessionWinner) reason = game.i18n.localize("HERO_OF_THE_PEOPLE.Status.AlreadyWon");
-          else if (isMaxed) reason = game.i18n.localize("HERO_OF_THE_PEOPLE.Status.AtMax");
-          return {
-            userId: u.id,
-            characterName: actor.name,
-            playerName: u.name,
-            greyed,
-            reason,
-          };
-        });
     } else {
       // Results phase
       context.results = this.#results;
 
-      // Override candidates
-      context.overrideCandidates = game.users
-        .filter((u) => !u.isGM && getPlayerCharacter(u))
-        .map((u) => {
-          const pc = getPlayerCharacter(u);
-          return {
-            userId: u.id,
-            name: `${pc.name} (${u.name})`,
-            isWinner: u.id === this.#results.winnerId,
-          };
-        });
+      // Override candidates — actor-based
+      context.overrideCandidates = getPlayerCharacterActors().map((a) => {
+        const owner = getOwnerName(a);
+        return {
+          actorId: a.id,
+          name: owner ? `${a.name} (${owner})` : a.name,
+          isWinner: a.id === this.#results.winnerId,
+        };
+      });
 
-      // Process hype entries
+      // Process hype entries — targetId is an actor ID
       context.hypeEntries = this.#hypeEntries.map((entry) => {
-        const target = game.users.get(entry.targetId);
+        const actor = game.actors.get(entry.targetId);
         const tagLabels = (entry.tags || []).map((key) => {
-          const info = HYPE_TAG_DISPLAY[key];
+          const info = HYPE_TAGS_BY_KEY[key];
           return info ? { icon: info.icon, label: game.i18n.localize(info.label) } : null;
         }).filter(Boolean);
         return {
-          targetName: target?.character?.name ?? target?.name ?? "Someone",
+          targetName: formatTargetName(actor),
           tags: tagLabels,
           message: entry.message || "",
         };
@@ -217,21 +181,10 @@ export class VoteMonitorDialog extends HandlebarsApplicationMixin(ApplicationV2)
   _onRender(context, options) {
     super._onRender(context, options);
     this.#injectBranding();
+    this.#restorePosition();
     if (this.#phase === "monitoring") {
       this.#startCountdown();
     }
-  }
-
-  /** Check if an actor is at max hero points/inspiration. */
-  #isAtMax(actor) {
-    const systemId = game.system.id;
-    if (systemId === "pf2e") {
-      const hp = actor.system?.resources?.heroPoints;
-      return hp && hp.value >= hp.max;
-    } else if (systemId === "dnd5e") {
-      return !!actor.system?.attributes?.inspiration;
-    }
-    return false;
   }
 
   /** Update the vote progress indicators in the DOM without re-rendering. */
@@ -282,6 +235,7 @@ export class VoteMonitorDialog extends HandlebarsApplicationMixin(ApplicationV2)
   }
 
   #startCountdown() {
+    if (this.#secondsLeft == null) return;
     if (this.#countdownInterval) clearInterval(this.#countdownInterval);
     const timerEl = this.element?.querySelector(".hero-of-the-people-monitor-timer");
     if (!timerEl) return;
@@ -297,27 +251,6 @@ export class VoteMonitorDialog extends HandlebarsApplicationMixin(ApplicationV2)
   }
 
   // ==================== ACTIONS ====================
-
-  static #onCastGMVote(event, target) {
-    if (this.#gmVoted) return;
-    const select = this.element.querySelector(".hero-of-the-people-gm-vote-select");
-    const targetId = select?.value || "random";
-    this.#gmVoted = true;
-    this.#votedIds.add(game.user.id);
-    this.#onGMVoteCallback(targetId);
-    this.#updateVoteProgress();
-
-    // Disable the vote section
-    const section = this.element.querySelector(".hero-of-the-people-gm-vote-section");
-    if (section) {
-      section.classList.add("hero-of-the-people-disabled");
-      const btn = section.querySelector('[data-action="castGMVote"]');
-      if (btn) {
-        btn.disabled = true;
-        btn.innerHTML = `<i class="fas fa-check"></i> ${game.i18n.localize("HERO_OF_THE_PEOPLE.Monitor.VoteCast")}`;
-      }
-    }
-  }
 
   static #onEndVoting(event, target) {
     this.#onEndVotingCallback();
@@ -367,11 +300,11 @@ export class VoteMonitorDialog extends HandlebarsApplicationMixin(ApplicationV2)
     if (this.#hypeEntries.length === 0) return;
 
     for (const entry of this.#hypeEntries) {
-      const targetUser = game.users.get(entry.targetId);
-      const targetName = targetUser?.character?.name ?? targetUser?.name ?? "Someone";
+      const targetActor = game.actors.get(entry.targetId);
+      const targetName = formatTargetName(targetActor);
 
       const tagLabels = (entry.tags || []).map((key) => {
-        const info = HYPE_TAG_DISPLAY[key];
+        const info = HYPE_TAGS_BY_KEY[key];
         return info ? `<i class="${info.icon}"></i> ${game.i18n.localize(info.label)}` : null;
       }).filter(Boolean);
 
@@ -415,7 +348,18 @@ export class VoteMonitorDialog extends HandlebarsApplicationMixin(ApplicationV2)
       clearInterval(this.#countdownInterval);
       this.#countdownInterval = null;
     }
+    const pos = this.position;
+    if (pos?.left != null && pos?.top != null) {
+      await game.settings.set(MODULE_ID, "monitorPosition", { left: pos.left, top: pos.top });
+    }
     return super.close(options);
+  }
+
+  #restorePosition() {
+    const saved = game.settings.get(MODULE_ID, "monitorPosition");
+    if (saved?.left != null && saved?.top != null) {
+      this.setPosition({ left: saved.left, top: saved.top });
+    }
   }
 
   #injectBranding() {

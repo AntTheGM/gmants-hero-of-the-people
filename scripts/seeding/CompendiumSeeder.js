@@ -4,7 +4,7 @@ import { MODULE_ID } from "../const.js";
  * Seeds the Hero of the People compendium with the GM macro on first load.
  */
 export class CompendiumSeeder {
-  static SEED_VERSION = 3;
+  static SEED_VERSION = 4;
 
   static async seedMacro() {
     if (!game.user.isGM) return;
@@ -41,7 +41,7 @@ export class CompendiumSeeder {
       {
         name: "Hero of the People",
         type: "script",
-        img: "icons/sundries/flags/banner-flag-pirate.webp",
+        img: "icons/sundries/flags/banner-symbol-axe-red.webp",
         command: `// Hero of the People — Open the Hero dialog
 // GM: Opens the reminder/initiate dialog with elapsed time
 // Players: Opens the Hero Hype dialog to send kudos

@@ -14,9 +14,6 @@ export class HeroOfThePeopleAPI {
   /** @type {Function} Opens the hype dialog for players (or GM reminder for GM) */
   #openHypeDialogFn;
 
-  /** @type {number} Timestamp (ms) when the module was loaded or last vote completed */
-  #lastVoteTime;
-
   /**
    * @param {object} callbacks
    * @param {Function} callbacks.initiateVote - Triggers the full vote flow
@@ -27,12 +24,16 @@ export class HeroOfThePeopleAPI {
     this.#initiateVoteFn = initiateVote;
     this.#openReminderFn = openReminder;
     this.#openHypeDialogFn = openHypeDialog;
-    this.#lastVoteTime = Date.now();
   }
 
-  /** Record that a vote just completed (resets elapsed timer). */
-  markVoteCompleted() {
-    this.#lastVoteTime = Date.now();
+  /** Record that a vote just completed (persists across reloads). */
+  async markVoteCompleted() {
+    await game.settings.set(MODULE_ID, "lastVoteTime", Date.now());
+  }
+
+  /** @returns {boolean} Whether a vote has been completed this session */
+  get hasVoted() {
+    return game.settings.get(MODULE_ID, "lastVoteTime") > 0;
   }
 
   /**
@@ -61,11 +62,15 @@ export class HeroOfThePeopleAPI {
   }
 
   /**
-   * Get a human-readable string of elapsed time since the last vote (or module load).
+   * Get a human-readable string of elapsed time since the last vote or session start.
    * @returns {string} e.g. "12m 34s", "1h 5m", "just now"
    */
   getElapsedTime() {
-    const elapsed = Date.now() - this.#lastVoteTime;
+    const lastVote = game.settings.get(MODULE_ID, "lastVoteTime");
+    const sessionStart = game.settings.get(MODULE_ID, "sessionStartTime");
+    const baseTime = lastVote || sessionStart || Date.now();
+
+    const elapsed = Date.now() - baseTime;
     const totalSeconds = Math.floor(elapsed / 1000);
     const hours = Math.floor(totalSeconds / 3600);
     const minutes = Math.floor((totalSeconds % 3600) / 60);

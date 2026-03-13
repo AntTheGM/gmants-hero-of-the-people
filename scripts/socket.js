@@ -42,18 +42,24 @@ export class HeroSocket {
     game.socket.emit(SOCKET_NAME, { event, payload });
   }
 
-  /** Broadcast that a vote has been initiated (GM → all players). */
-  emitInitiateVote() {
-    this.#emit(SOCKET_EVENTS.INITIATE_VOTE);
+  /**
+   * Broadcast that a vote has been initiated (GM → all players).
+   * @param {object} [options={}]
+   * @param {boolean} [options.timerEnabled=true] - Whether the countdown timer is active
+   * @param {number} [options.timerDuration=120] - Countdown duration in seconds
+   */
+  emitInitiateVote({ timerEnabled = true, timerDuration = 120 } = {}) {
+    this.#emit(SOCKET_EVENTS.INITIATE_VOTE, { timerEnabled, timerDuration });
   }
 
   /**
    * Send a vote to the GM.
    * @param {string} voterId - The voting user's ID
    * @param {string} targetId - The chosen target's user ID, or "random"
+   * @param {object|null} [hype] - Optional hype data to send alongside the vote
    */
-  emitCastVote(voterId, targetId) {
-    this.#emit(SOCKET_EVENTS.CAST_VOTE, { voterId, targetId });
+  emitCastVote(voterId, targetId, hype = null) {
+    this.#emit(SOCKET_EVENTS.CAST_VOTE, { voterId, targetId, hype });
   }
 
   /**

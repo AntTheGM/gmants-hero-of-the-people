@@ -4,12 +4,12 @@
   <div class="hero-of-the-people-section">
     <div class="hero-of-the-people-section-header">
       <label>{{localize "HERO_OF_THE_PEOPLE.Section.Vote"}}</label>
-      <span class="hero-of-the-people-countdown">{{secondsLeft}}s</span>
+      {{#if hasTimer}}<span class="hero-of-the-people-countdown">{{secondsLeft}}s</span>{{/if}}
     </div>
 
-    <div class="hero-of-the-people-player-list">
+    <div class="hero-of-the-people-player-list" role="listbox">
       {{!-- Random option --}}
-      <div class="hero-of-the-people-player-entry" data-user-id="random">
+      <div class="hero-of-the-people-player-entry" data-actor-id="random">
         <div class="hero-of-the-people-player-info">
           <i class="fas fa-dice hero-of-the-people-player-icon"></i>
           <span class="hero-of-the-people-player-name">{{localize "HERO_OF_THE_PEOPLE.Button.Random"}}</span>
@@ -17,7 +17,7 @@
       </div>
 
       {{#each players}}
-      <div class="hero-of-the-people-player-entry {{#if greyed}}greyed-out{{/if}}" data-user-id="{{userId}}">
+      <div class="hero-of-the-people-player-entry {{#if greyed}}greyed-out{{/if}}" data-actor-id="{{actorId}}">
         <div class="hero-of-the-people-player-info">
           <img class="hero-of-the-people-avatar" src="{{img}}" alt="{{characterName}}" />
           <div class="hero-of-the-people-player-names">
@@ -52,7 +52,7 @@
       <select name="hype-target" class="hero-of-the-people-hype-target-select">
         <option value="">{{localize "HERO_OF_THE_PEOPLE.Hype.SelectPlayer"}}</option>
         {{#each hypeTargets}}
-        <option value="{{userId}}">{{name}}</option>
+        <option value="{{actorId}}">{{name}}</option>
         {{/each}}
       </select>
     </div>

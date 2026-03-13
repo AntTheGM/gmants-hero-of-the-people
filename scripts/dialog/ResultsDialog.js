@@ -1,15 +1,10 @@
 import { MODULE_ID } from "../const.js";
-import { getPlayerCharacter } from "../utils.js";
+import { formatTargetName, getOwnerName, getPlayerCharacterActors, HYPE_TAGS } from "../utils.js";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
-/** Tag display info, keyed by tag key */
-const HYPE_TAG_DISPLAY = {
-  roleplay: { icon: "fas fa-theater-masks", label: "HERO_OF_THE_PEOPLE.Hype.Roleplay" },
-  tactical: { icon: "fas fa-chess-knight", label: "HERO_OF_THE_PEOPLE.Hype.Tactical" },
-  puzzle: { icon: "fas fa-puzzle-piece", label: "HERO_OF_THE_PEOPLE.Hype.Puzzle" },
-  helper: { icon: "fas fa-hands-helping", label: "HERO_OF_THE_PEOPLE.Hype.Helper" },
-};
+/** Lookup map from tag key to {icon, label} for display purposes. */
+const HYPE_TAGS_BY_KEY = Object.fromEntries(HYPE_TAGS.map((t) => [t.key, { icon: t.icon, label: t.label }]));
 
 /**
  * GM-only dialog showing vote results with accept/override options and collected hype.
@@ -63,28 +58,26 @@ export class ResultsDialog extends HandlebarsApplicationMixin(ApplicationV2) {
     const context = await super._prepareContext(options);
     context.results = this.#results;
 
-    // Build override candidates
-    context.overrideCandidates = game.users
-      .filter((u) => !u.isGM && getPlayerCharacter(u))
-      .map((u) => {
-        const pc = getPlayerCharacter(u);
-        return {
-          userId: u.id,
-          name: `${pc.name} (${u.name})`,
-          isWinner: u.id === this.#results.winnerId,
-        };
-      });
+    // Build override candidates — actor-based
+    context.overrideCandidates = getPlayerCharacterActors().map((a) => {
+      const owner = getOwnerName(a);
+      return {
+        actorId: a.id,
+        name: owner ? `${a.name} (${owner})` : a.name,
+        isWinner: a.id === this.#results.winnerId,
+      };
+    });
 
-    // Process hype entries for display
+    // Process hype entries for display — targetId is an actor ID
     context.hypeEntries = this.#hypeEntries.map((entry) => {
-      const target = game.users.get(entry.targetId);
+      const actor = game.actors.get(entry.targetId);
       const tagLabels = (entry.tags || []).map((key) => {
-        const info = HYPE_TAG_DISPLAY[key];
+        const info = HYPE_TAGS_BY_KEY[key];
         return info ? { icon: info.icon, label: game.i18n.localize(info.label) } : null;
       }).filter(Boolean);
 
       return {
-        targetName: target?.character?.name ?? target?.name ?? "Someone",
+        targetName: formatTargetName(actor),
         tags: tagLabels,
         message: entry.message || "",
       };
@@ -118,11 +111,11 @@ export class ResultsDialog extends HandlebarsApplicationMixin(ApplicationV2) {
 
     // Build anonymous hype chat messages
     for (const entry of this.#hypeEntries) {
-      const targetUser = game.users.get(entry.targetId);
-      const targetName = targetUser?.character?.name ?? targetUser?.name ?? "Someone";
+      const targetActor = game.actors.get(entry.targetId);
+      const targetName = formatTargetName(targetActor);
 
       const tagLabels = (entry.tags || []).map((key) => {
-        const info = HYPE_TAG_DISPLAY[key];
+        const info = HYPE_TAGS_BY_KEY[key];
         return info ? `<i class="${info.icon}"></i> ${game.i18n.localize(info.label)}` : null;
       }).filter(Boolean);
 

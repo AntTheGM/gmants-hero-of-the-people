@@ -1,11 +1,12 @@
 import { MODULE_ID } from "../const.js";
-import { getPlayerCharacter } from "../utils.js";
+import { getEligibleActors, getOwnerName } from "../utils.js";
 
 /**
  * Collects and tallies votes from all players (GM-side only).
+ * Vote targets are actor IDs.
  */
 export class VoteCollector {
-  /** @type {Map<string, string>} voterId → targetId */
+  /** @type {Map<string, string>} voterId → actorId */
   #votes = new Map();
 
   /** @type {Set<string>} Expected voter user IDs */
@@ -25,27 +26,28 @@ export class VoteCollector {
    * @param {string[]} options.expectedVoterIds - User IDs expected to vote
    * @param {Function} options.onComplete - Called with results when voting ends
    * @param {Function} [options.onVoteReceived] - Called with (voterId, currentCount, expectedCount) on each vote
-   * @param {number} [options.timeoutSeconds=60] - Auto-close after this many seconds
+   * @param {number|null} [options.timeoutSeconds=120] - Auto-close seconds, or null to disable
    */
-  constructor({ expectedVoterIds, onComplete, onVoteReceived, timeoutSeconds = 60 }) {
+  constructor({ expectedVoterIds, onComplete, onVoteReceived, timeoutSeconds = 120 }) {
     this.#expectedVoters = new Set(expectedVoterIds);
     this.#onComplete = onComplete;
     this.#onVoteReceived = onVoteReceived ?? null;
 
-    // Start auto-timeout
-    this.#timeoutId = setTimeout(() => {
-      console.log(`${MODULE_ID} | Vote timeout reached, resolving with current votes`);
-      this.resolve();
-    }, timeoutSeconds * 1000);
+    // Start auto-timeout (only if enabled)
+    if (timeoutSeconds != null) {
+      this.#timeoutId = setTimeout(() => {
+        console.log(`${MODULE_ID} | Vote timeout reached, resolving with current votes`);
+        this.resolve();
+      }, timeoutSeconds * 1000);
+    }
   }
 
   /**
    * Record a vote.
-   * @param {string} voterId
-   * @param {string} targetId - User ID or "random"
+   * @param {string} voterId - User ID of the voter
+   * @param {string} targetId - Actor ID or "random"
    */
   addVote(voterId, targetId) {
-    if (!this.#expectedVoters.has(voterId)) return;
     if (this.#votes.has(voterId)) return; // No double-voting
 
     this.#votes.set(voterId, targetId);
@@ -55,8 +57,9 @@ export class VoteCollector {
       this.#onVoteReceived(voterId, this.#votes.size, this.#expectedVoters.size);
     }
 
-    // Check if all votes are in
-    if (this.#votes.size >= this.#expectedVoters.size) {
+    // Check if all expected voters have voted (auto-resolve)
+    const expectedIn = [...this.#expectedVoters].every((id) => this.#votes.has(id));
+    if (expectedIn && this.#expectedVoters.size > 0) {
       this.resolve();
     }
   }
@@ -95,7 +98,7 @@ export class VoteCollector {
    * @returns {object} Results with winner and vote breakdown
    */
   #tally() {
-    const eligibleTargets = this.#getEligibleTargets();
+    const eligibleTargets = getEligibleActors().map((a) => a.id);
 
     // Resolve "random" votes
     const resolvedVotes = new Map();
@@ -108,7 +111,7 @@ export class VoteCollector {
       }
     }
 
-    // Count votes per target
+    // Count votes per target (actor ID)
     const tallies = new Map();
     for (const [, targetId] of resolvedVotes) {
       tallies.set(targetId, (tallies.get(targetId) || 0) + 1);
@@ -135,21 +138,21 @@ export class VoteCollector {
     const breakdown = [];
     for (const [voterId, targetId] of resolvedVotes) {
       const voter = game.users.get(voterId);
-      const target = game.users.get(targetId);
+      const targetActor = game.actors.get(targetId);
       breakdown.push({
         voterId,
-        voterName: voter?.name ?? "Unknown",
+        voterName: voter?.name ?? "GM",
         targetId,
-        targetName: (target ? getPlayerCharacter(target)?.name : null) ?? target?.name ?? "Unknown",
+        targetName: targetActor?.name ?? "Unknown",
       });
     }
 
-    const winner = game.users.get(winnerId);
+    const winnerActor = game.actors.get(winnerId);
     return {
       winnerId,
-      winnerName: (winner ? getPlayerCharacter(winner)?.name : null) ?? winner?.name ?? "Unknown",
-      winnerPlayerName: winner?.name ?? "Unknown",
-      winnerImg: (winner ? getPlayerCharacter(winner)?.img : null) ?? "",
+      winnerName: winnerActor?.name ?? "Unknown",
+      winnerPlayerName: getOwnerName(winnerActor),
+      winnerImg: winnerActor?.img ?? "",
       voteCount: maxVotes,
       totalVotes: resolvedVotes.size,
       breakdown,
@@ -157,11 +160,4 @@ export class VoteCollector {
     };
   }
 
-  /** Get user IDs of eligible vote targets (non-GM, active, with characters). */
-  #getEligibleTargets() {
-    const sessionWinners = game.settings.get(MODULE_ID, "sessionWinners");
-    return game.users
-      .filter((u) => !u.isGM && u.active && getPlayerCharacter(u) && !sessionWinners.includes(u.id))
-      .map((u) => u.id);
-  }
 }

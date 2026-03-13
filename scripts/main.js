@@ -7,10 +7,13 @@ import { HeroOfThePeopleDialog } from "./dialog/HeroOfThePeopleDialog.js";
 import { ResultsDialog } from "./dialog/ResultsDialog.js";
 import { VoteMonitorDialog } from "./dialog/VoteMonitorDialog.js";
 import { VoteCollector } from "./voting/vote-collector.js";
-import { awardHeroPoint, postWinnerChat, trackSessionWinner } from "./awarding.js";
+import { awardHeroPoint, trackSessionWinner } from "./awarding.js";
+import { postStartupChat } from "./chat/startup-message.js";
+import { postWinnerChat } from "./chat/winner-message.js";
 import { HeroOfThePeopleAPI } from "./api.js";
 import { CompendiumSeeder } from "./seeding/CompendiumSeeder.js";
-import { getPlayerCharacter } from "./utils.js";
+import { getPlayerCharacter, getEligibleActors } from "./utils.js";
+import { onRenderChatMessage as injectRerollButton } from "./reroll/reroll-button.js";
 
 /** @type {HeroSocket} */
 let heroSocket;
@@ -43,9 +46,14 @@ Hooks.once("init", () => {
 Hooks.once("ready", async () => {
   console.log(`${MODULE_ID} | Ready`);
 
-  // Reset session winners on world load
+  // On first GM login, set session start time and reset winners
   if (game.user.isGM) {
-    await game.settings.set(MODULE_ID, "sessionWinners", []);
+    const existingStart = game.settings.get(MODULE_ID, "sessionStartTime");
+    if (!existingStart) {
+      await game.settings.set(MODULE_ID, "sessionStartTime", Date.now());
+      await game.settings.set(MODULE_ID, "sessionWinners", []);
+      await game.settings.set(MODULE_ID, "lastVoteTime", 0);
+    }
   }
 
   // Initialize socket
@@ -76,8 +84,8 @@ Hooks.once("ready", async () => {
 
 // --- Settings page promo ---
 Hooks.on("renderSettingsConfig", (app, html) => {
-  const tab = html[0]?.querySelector?.(`[data-tab="${MODULE_ID}"]`)
-    ?? html.querySelector?.(`[data-tab="${MODULE_ID}"]`);
+  const tab = html[0]?.querySelector?.(`.tab[data-tab="${MODULE_ID}"]`)
+    ?? html.querySelector?.(`.tab[data-tab="${MODULE_ID}"]`);
   if (!tab || tab.querySelector(`.${MODULE_ID}-settings-promo`)) return;
   const note = document.createElement("p");
   note.className = `${MODULE_ID}-settings-promo`;
@@ -86,36 +94,7 @@ Hooks.on("renderSettingsConfig", (app, html) => {
   tab.appendChild(note);
 });
 
-// ==================== STARTUP CHAT ====================
-
-function postStartupChat() {
-  const interval = game.settings.get(MODULE_ID, "reminderInterval");
-  const content = `
-    <div class="hero-of-the-people-chat-card">
-      <div class="hero-of-the-people-chat-header">
-        <i class="fas fa-medal"></i>
-        <strong>${game.i18n.localize("HERO_OF_THE_PEOPLE.Chat.Startup")}</strong>
-      </div>
-      <div class="hero-of-the-people-chat-award">
-        ${game.i18n.format("HERO_OF_THE_PEOPLE.Chat.StartupInterval", { interval })}
-      </div>
-      <div class="hero-of-the-people-chat-quote">
-        <em>${game.i18n.localize("HERO_OF_THE_PEOPLE.Chat.StartupHint")}</em>
-      </div>
-      <a class="hero-of-the-people-chat-open-link" data-action="openHero">
-        <i class="fas fa-external-link-alt"></i> ${game.i18n.localize("HERO_OF_THE_PEOPLE.Chat.OpenLink")}
-      </a>
-    </div>
-  `;
-
-  ChatMessage.create({
-    content,
-    speaker: { alias: game.i18n.localize("HERO_OF_THE_PEOPLE.Dialog.Title") },
-    flags: { [MODULE_ID]: { type: "startup" } },
-  });
-}
-
-// Bind click handler for the "Open" link in chat messages
+// Bind click handler for the "Open" link in chat messages + inject reroll buttons
 Hooks.on("renderChatMessage", (message, html) => {
   const link = html[0]?.querySelector?.(".hero-of-the-people-chat-open-link")
     ?? html.querySelector?.(".hero-of-the-people-chat-open-link");
@@ -125,6 +104,9 @@ Hooks.on("renderChatMessage", (message, html) => {
       game.heroOfThePeople?.open();
     });
   }
+
+  // Inject hero point reroll button on PF2e check cards
+  injectRerollButton(message, html);
 });
 
 // ==================== GM SETUP ====================
@@ -132,12 +114,15 @@ Hooks.on("renderChatMessage", (message, html) => {
 function setupGM() {
   // GM listens for votes from players
   heroSocket.on(SOCKET_EVENTS.CAST_VOTE, (payload) => {
-    if (activeCollector) {
-      activeCollector.addVote(payload.voterId, payload.targetId);
-    }
-    // Collect hype if attached
+    // Collect hype before adding vote (vote may trigger immediate resolve)
     if (payload.hype) {
       collectedHype.push(payload.hype);
+      if (activeMonitorDialog && payload.voterId) {
+        activeMonitorDialog.onHypeReceived(payload.voterId);
+      }
+    }
+    if (activeCollector) {
+      activeCollector.addVote(payload.voterId, payload.targetId);
     }
   });
 
@@ -157,16 +142,19 @@ function setupGM() {
 
 function openReminderDialog({ fromTimer = false } = {}) {
   // If called from the automatic timer and no players are online, silently retry later
-  if (fromTimer && getEligiblePlayers().length === 0) {
+  if (fromTimer && getEligibleActors().length === 0) {
     reminderTimer.start();
     return;
   }
 
   // Get elapsed time from API
   const elapsed = game.heroOfThePeople?.getElapsedTime() ?? "";
+  const hasVoted = game.heroOfThePeople?.hasVoted ?? false;
 
   new ReminderDialog({
     elapsed,
+    hasVoted,
+    nextFireTime: reminderTimer.nextFireTime,
     onInitiate: () => initiateVote(),
     onSnooze: (minutes) => reminderTimer.snooze(minutes),
     onSkip: () => reminderTimer.skipSession(),
@@ -174,93 +162,114 @@ function openReminderDialog({ fromTimer = false } = {}) {
 }
 
 function initiateVote() {
-  const eligible = getEligiblePlayers();
+  try {
+    const eligible = getEligibleActors();
+    console.log(`${MODULE_ID} | Initiating vote. Eligible actors:`, eligible.map((a) => a.name));
 
-  // Edge case: no eligible players
-  if (eligible.length === 0) {
-    ui.notifications.info(game.i18n.localize("HERO_OF_THE_PEOPLE.Status.NoEligible"));
-    reminderTimer.start();
-    return;
+    // Edge case: no eligible players
+    if (eligible.length === 0) {
+      ui.notifications.info(game.i18n.localize("HERO_OF_THE_PEOPLE.Status.NoEligible"));
+      reminderTimer.start();
+      return;
+    }
+
+    // Reset hype collection for this round
+    collectedHype = [];
+
+    // Read timer settings
+    const timerEnabled = game.settings.get(MODULE_ID, "voteTimerEnabled");
+    const timerDuration = game.settings.get(MODULE_ID, "voteTimerDuration");
+    const timeoutSeconds = timerEnabled ? timerDuration : null;
+
+    // Broadcast to all players to open their voting dialogs
+    heroSocket.emitInitiateVote({ timerEnabled, timerDuration });
+
+    // Build expected voter list: active non-GM users with a character + the GM
+    // Offline players' characters are eligible to be voted FOR, but only online players vote
+    const expectedVoterIds = game.users
+      .filter((u) => !u.isGM && u.active && getPlayerCharacter(u))
+      .map((u) => u.id);
+    // Include GM in the expected voters so the collector waits for the GM's vote too
+    expectedVoterIds.push(game.user.id);
+
+    // Open the same voting dialog for the GM so they can vote + submit hype
+    if (activeVotingDialog) {
+      activeVotingDialog.close();
+      activeVotingDialog = null;
+    }
+    activeVotingDialog = new HeroOfThePeopleDialog({
+      timeoutSeconds,
+      onVote: (voterId, targetId, hypeData) => {
+        // GM vote goes directly to collector (no socket needed)
+        if (hypeData) {
+          collectedHype.push(hypeData);
+        }
+        if (activeCollector) {
+          activeCollector.addVote(voterId, targetId);
+        }
+        // Update monitor to show GM has voted
+        if (activeMonitorDialog) {
+          activeMonitorDialog.onVoteReceived(voterId);
+        }
+      },
+    });
+    activeVotingDialog.render(true);
+
+    // Open the GM's vote monitor dialog
+    if (activeMonitorDialog) {
+      activeMonitorDialog.close();
+      activeMonitorDialog = null;
+    }
+
+    activeMonitorDialog = new VoteMonitorDialog({
+      expectedCount: expectedVoterIds.length,
+      timeoutSeconds,
+      onEndVoting: () => {
+        if (activeCollector) {
+          activeCollector.resolve();
+        }
+      },
+      onAccept: (winnerId) => finalizeWinner(winnerId),
+    });
+    activeMonitorDialog.render(true);
+
+    // Create vote collector
+    activeCollector = new VoteCollector({
+      expectedVoterIds,
+      onComplete: (results) => {
+        activeCollector = null;
+        heroSocket.emitCloseVoting();
+        // Transition the monitor dialog to results phase
+        if (activeMonitorDialog) {
+          activeMonitorDialog.showResults(results, [...collectedHype]);
+        }
+      },
+      onVoteReceived: (voterId) => {
+        // Update the monitor dialog with live vote progress
+        if (activeMonitorDialog) {
+          activeMonitorDialog.onVoteReceived(voterId);
+        }
+      },
+      timeoutSeconds,
+    });
+  } catch (err) {
+    console.error(`${MODULE_ID} | Error in initiateVote:`, err);
+    ui.notifications.error(game.i18n.localize("HERO_OF_THE_PEOPLE.Error.InitiateVote"));
   }
-
-  // Reset hype collection for this round
-  collectedHype = [];
-
-  // Broadcast to all players to open their voting dialogs
-  heroSocket.emitInitiateVote();
-
-  // Build expected voter list: active non-GM users with a character
-  const expectedVoterIds = game.users
-    .filter((u) => !u.isGM && u.active && getPlayerCharacter(u))
-    .map((u) => u.id);
-
-  // Open the GM's vote monitor dialog
-  if (activeMonitorDialog) {
-    activeMonitorDialog.close();
-    activeMonitorDialog = null;
-  }
-
-  activeMonitorDialog = new VoteMonitorDialog({
-    expectedCount: expectedVoterIds.length,
-    timeoutSeconds: 60,
-    onGMVote: (targetId) => {
-      if (activeCollector) {
-        activeCollector.addVote(game.user.id, targetId);
-      }
-    },
-    onEndVoting: () => {
-      if (activeCollector) {
-        activeCollector.resolve();
-      }
-    },
-    onAccept: (winnerId) => finalizeWinner(winnerId),
-  });
-  activeMonitorDialog.render(true);
-
-  // Create vote collector
-  activeCollector = new VoteCollector({
-    expectedVoterIds,
-    onComplete: (results) => {
-      activeCollector = null;
-      heroSocket.emitCloseVoting();
-      // Transition the monitor dialog to results phase
-      if (activeMonitorDialog) {
-        activeMonitorDialog.showResults(results, [...collectedHype]);
-      }
-    },
-    onVoteReceived: (voterId) => {
-      // Update the monitor dialog with live vote progress
-      if (activeMonitorDialog) {
-        activeMonitorDialog.onVoteReceived(voterId);
-      }
-    },
-    timeoutSeconds: 60,
-  });
 }
 
-function openVotingDialog() {
+function openVotingDialog({ timerEnabled = true, timerDuration = 120 } = {}) {
   if (activeVotingDialog) {
     activeVotingDialog.close();
     activeVotingDialog = null;
   }
 
+  const timeoutSeconds = timerEnabled ? timerDuration : null;
   activeVotingDialog = new HeroOfThePeopleDialog({
+    timeoutSeconds,
     onVote: (voterId, targetId, hypeData) => {
-      // GM's vote goes directly to collector
-      if (game.user.isGM && activeCollector) {
-        activeCollector.addVote(voterId, targetId);
-      } else {
-        // Player sends vote + hype via socket
-        heroSocket.emitCastVote(voterId, targetId);
-      }
-      // Collect hype locally for GM, or send via socket for players
-      if (hypeData) {
-        if (game.user.isGM) {
-          collectedHype.push(hypeData);
-        } else {
-          heroSocket.emitSubmitHype(hypeData);
-        }
-      }
+      // Player sends vote + hype in one socket message
+      heroSocket.emitCastVote(voterId, targetId, hypeData);
     },
   });
   activeVotingDialog.render(true);
@@ -304,15 +313,14 @@ function openResultsDialog(results) {
   }
 }
 
-async function finalizeWinner(winnerId) {
-  const user = game.users.get(winnerId);
-  const character = user ? getPlayerCharacter(user) : null;
-  const winnerName = character?.name ?? user?.name ?? "Unknown";
+async function finalizeWinner(actorId) {
+  const actor = game.actors.get(actorId);
+  const winnerName = actor?.name ?? "Unknown";
 
-  const awardType = await awardHeroPoint(winnerId);
-  await trackSessionWinner(winnerId);
-  await postWinnerChat({ winnerId, winnerName, awardType });
-  heroSocket.emitVoteResults({ winnerId, winnerName, awardType });
+  const awardType = await awardHeroPoint(actorId);
+  await trackSessionWinner(actorId);
+  await postWinnerChat({ winnerId: actorId, winnerName, awardType });
+  heroSocket.emitVoteResults({ winnerId: actorId, winnerName, awardType });
 
   game.heroOfThePeople?.markVoteCompleted();
   reminderTimer.start();
@@ -327,8 +335,8 @@ async function finalizeWinner(winnerId) {
 // ==================== PLAYER SETUP ====================
 
 function setupPlayer() {
-  heroSocket.on(SOCKET_EVENTS.INITIATE_VOTE, () => {
-    openVotingDialog();
+  heroSocket.on(SOCKET_EVENTS.INITIATE_VOTE, (payload) => {
+    openVotingDialog(payload);
   });
 
   heroSocket.on(SOCKET_EVENTS.VOTE_RESULTS, () => {
@@ -346,26 +354,3 @@ function setupPlayer() {
   });
 }
 
-// ==================== UTILITIES ====================
-
-function getEligiblePlayers() {
-  const sessionWinners = game.settings.get(MODULE_ID, "sessionWinners");
-  return game.users.filter((u) => {
-    if (u.isGM || !u.active) return false;
-    const character = getPlayerCharacter(u);
-    if (!character) return false;
-    if (sessionWinners.includes(u.id)) return false;
-    return !isAtMax(character);
-  });
-}
-
-function isAtMax(actor) {
-  const systemId = game.system.id;
-  if (systemId === "pf2e") {
-    const hp = actor.system?.resources?.heroPoints;
-    return hp && hp.value >= hp.max;
-  } else if (systemId === "dnd5e") {
-    return !!actor.system?.attributes?.inspiration;
-  }
-  return false;
-}
