@@ -1,5 +1,4 @@
 import { MODULE_ID } from "../const.js";
-import { getPlayerCharacterActors } from "../utils.js";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
@@ -170,35 +169,49 @@ export class ReminderDialog extends HandlebarsApplicationMixin(ApplicationV2) {
 
   static async #onResetPoints(event, target) {
     const systemId = game.system.id;
-    const actors = getPlayerCharacterActors();
-    let count = 0;
+    // Get unique actors from all tokens on the current scene
+    const scene = canvas.scene;
+    if (!scene) {
+      ui.notifications.warn("No active scene.");
+      return;
+    }
+    const seen = new Set();
+    const actors = [];
+    for (const token of scene.tokens) {
+      const actor = token.actor;
+      if (!actor || seen.has(actor.id)) continue;
+      seen.add(actor.id);
+      actors.push(actor);
+    }
+    const affected = [];
 
     if (systemId === "pf2e") {
       for (const actor of actors) {
         const hp = actor.system?.resources?.heroPoints;
         if (hp && hp.value !== 1) {
           await actor.update({ "system.resources.heroPoints.value": 1 });
-          count++;
+          affected.push(actor.name);
         }
       }
-      ui.notifications.info(game.i18n.format("HERO_OF_THE_PEOPLE.Status.PointsReset", { count }));
+      ui.notifications.info(game.i18n.format("HERO_OF_THE_PEOPLE.Status.PointsReset", { count: affected.length, names: affected.join(", ") }));
     } else if (systemId === "dnd5e") {
       for (const actor of actors) {
-        // Check if actor's race is Human — grant inspiration, otherwise remove it
-        const race = (actor.system?.details?.race ?? "").toLowerCase();
-        const raceItem = actor.items.find((i) => i.type === "race");
-        const raceName = raceItem?.name?.toLowerCase() ?? "";
-        const isHuman = race.includes("human") || raceName.includes("human");
+        // In dnd5e 5.x, system.details.race is a LocalDocumentField resolving to an Item.
+        const raceRef = actor.system?.details?.race;
+        const raceName = raceRef?.name
+          ?? actor.items.find((i) => i.type === "race")?.name
+          ?? (typeof raceRef === "string" ? raceRef : "");
+        const isHuman = raceName.toLowerCase().includes("human");
         const current = !!actor.system?.attributes?.inspiration;
         if (isHuman && !current) {
           await actor.update({ "system.attributes.inspiration": true });
-          count++;
+          affected.push(actor.name);
         } else if (!isHuman && current) {
           await actor.update({ "system.attributes.inspiration": false });
-          count++;
+          affected.push(actor.name);
         }
       }
-      ui.notifications.info(game.i18n.format("HERO_OF_THE_PEOPLE.Status.InspirationReset", { count }));
+      ui.notifications.info(game.i18n.format("HERO_OF_THE_PEOPLE.Status.InspirationReset", { count: affected.length, names: affected.join(", ") }));
     }
 
     // Disable the button after reset
