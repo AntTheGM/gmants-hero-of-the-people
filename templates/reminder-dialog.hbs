@@ -1,6 +1,6 @@
-<div class="hero-of-the-people-form">
+<div class="gmants-hero-of-the-people-form">
   {{#if elapsed}}
-  <div class="hero-of-the-people-elapsed">
+  <div class="gmants-hero-of-the-people-elapsed">
     <i class="fas fa-clock"></i>
     {{#if hasVoted}}
       {{localize "HERO_OF_THE_PEOPLE.Time.SinceVote"}}: <strong>{{elapsed}}</strong>
@@ -10,54 +10,54 @@
   </div>
   {{/if}}
   {{#if nextFireTime}}
-  <div class="hero-of-the-people-elapsed hero-of-the-people-next-vote">
+  <div class="gmants-hero-of-the-people-elapsed gmants-hero-of-the-people-next-vote">
     <i class="fas fa-hourglass-half"></i>
     {{localize "HERO_OF_THE_PEOPLE.Time.NextVote"}}: <strong>{{nextFireTime}}</strong>
   </div>
   {{/if}}
 
-  <button type="button" class="hero-of-the-people-primary-btn" data-action="initiate">
+  <button type="button" class="gmants-hero-of-the-people-primary-btn" data-action="initiate">
     <i class="fas fa-medal"></i> {{localize "HERO_OF_THE_PEOPLE.Button.Initiate"}}
   </button>
 
-  <div class="hero-of-the-people-section">
-    <div class="hero-of-the-people-section-header">
+  <div class="gmants-hero-of-the-people-section">
+    <div class="gmants-hero-of-the-people-section-header">
       <label>{{localize "HERO_OF_THE_PEOPLE.Button.Snooze"}}</label>
     </div>
-    <div class="hero-of-the-people-snooze-buttons">
-      <button type="button" class="hero-of-the-people-secondary-btn" data-action="snooze1">
+    <div class="gmants-hero-of-the-people-snooze-buttons">
+      <button type="button" class="gmants-hero-of-the-people-secondary-btn" data-action="snooze1">
         {{localize "HERO_OF_THE_PEOPLE.Snooze.1min"}}
       </button>
-      <button type="button" class="hero-of-the-people-secondary-btn" data-action="snooze5">
+      <button type="button" class="gmants-hero-of-the-people-secondary-btn" data-action="snooze5">
         {{localize "HERO_OF_THE_PEOPLE.Snooze.5min"}}
       </button>
-      <button type="button" class="hero-of-the-people-secondary-btn" data-action="snooze10">
+      <button type="button" class="gmants-hero-of-the-people-secondary-btn" data-action="snooze10">
         {{localize "HERO_OF_THE_PEOPLE.Snooze.10min"}}
       </button>
     </div>
-    <div class="hero-of-the-people-snooze-until-row">
-      <button type="button" class="hero-of-the-people-secondary-btn" data-action="snoozeUntil">
+    <div class="gmants-hero-of-the-people-snooze-until-row">
+      <button type="button" class="gmants-hero-of-the-people-secondary-btn" data-action="snoozeUntil">
         <i class="fas fa-clock"></i> {{localize "HERO_OF_THE_PEOPLE.Snooze.Until"}}
       </button>
-      <input type="time" class="hero-of-the-people-snooze-time-input" value="{{snoozeUntilDefault}}" />
+      <input type="time" class="gmants-hero-of-the-people-snooze-time-input" value="{{snoozeUntilDefault}}" />
     </div>
   </div>
 
-  <details class="hero-of-the-people-advanced">
+  <details class="gmants-hero-of-the-people-advanced">
     <summary><i class="fas fa-cog"></i> {{localize "HERO_OF_THE_PEOPLE.Advanced.Title"}}</summary>
-    <div class="hero-of-the-people-advanced-content">
-      <button type="button" class="hero-of-the-people-secondary-btn hero-of-the-people-skip-btn" data-action="skipSession">
+    <div class="gmants-hero-of-the-people-advanced-content">
+      <button type="button" class="gmants-hero-of-the-people-secondary-btn gmants-hero-of-the-people-skip-btn" data-action="skipSession">
         <i class="fas fa-forward"></i> {{localize "HERO_OF_THE_PEOPLE.Button.SkipSession"}}
       </button>
-      <button type="button" class="hero-of-the-people-secondary-btn" data-action="clearHistory">
+      <button type="button" class="gmants-hero-of-the-people-secondary-btn" data-action="clearHistory">
         <i class="fas fa-eraser"></i> {{localize "HERO_OF_THE_PEOPLE.Button.ClearHistory"}}{{#if hasWinners}} ({{winnerCount}}){{/if}}
       </button>
       {{#if systemLabel}}
-      <div class="hero-of-the-people-reset-row">
-        <button type="button" class="hero-of-the-people-secondary-btn" data-action="resetPoints">
+      <div class="gmants-hero-of-the-people-reset-row">
+        <button type="button" class="gmants-hero-of-the-people-secondary-btn" data-action="resetPoints">
           <i class="fas fa-undo"></i> {{localize "HERO_OF_THE_PEOPLE.Button.ResetPoints"}}
         </button>
-        <span class="hero-of-the-people-system-chip hero-of-the-people-system-chip--{{systemId}}">
+        <span class="gmants-hero-of-the-people-system-chip gmants-hero-of-the-people-system-chip--{{systemId}}">
           {{systemLabel}}
         </span>
       </div>

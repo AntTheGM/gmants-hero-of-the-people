@@ -133,10 +133,10 @@ export class HeroOfThePeopleDialog extends HandlebarsApplicationMixin(Applicatio
   }
 
   #bindPlayerClicks() {
-    const entries = this.element.querySelectorAll(".hero-of-the-people-player-entry:not(.greyed-out)");
+    const entries = this.element.querySelectorAll(".gmants-hero-of-the-people-player-entry:not(.greyed-out)");
     const selectEntry = (entry) => {
       if (this.#submitted) return;
-      this.element.querySelectorAll(".hero-of-the-people-player-entry").forEach((e) =>
+      this.element.querySelectorAll(".gmants-hero-of-the-people-player-entry").forEach((e) =>
         e.classList.remove("selected")
       );
       entry.classList.add("selected");
@@ -159,7 +159,7 @@ export class HeroOfThePeopleDialog extends HandlebarsApplicationMixin(Applicatio
     if (this.#submitted || this.#secondsLeft == null) return;
     if (this.#countdownInterval) clearInterval(this.#countdownInterval);
 
-    const timerEl = this.element.querySelector(".hero-of-the-people-countdown");
+    const timerEl = this.element.querySelector(".gmants-hero-of-the-people-countdown");
     if (!timerEl) return;
 
     this.#countdownInterval = setInterval(() => {

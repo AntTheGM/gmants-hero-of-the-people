@@ -5,45 +5,45 @@
 /* --- Color Palette --- */
 /* Defined on :root so chat cards (outside module windows) can also use them. */
 :root {
-  --hero-of-the-people-brand: #a44;
-  --hero-of-the-people-gold: #b8860b;
-  --hero-of-the-people-gold-light: #daa520;
-  --hero-of-the-people-success: #4a4;
-  --hero-of-the-people-purple: #8a7ec0;
-  --hero-of-the-people-purple-bg: rgba(90, 78, 140, 0.08);
-  --hero-of-the-people-purple-border: rgba(90, 78, 140, 0.15);
-  --hero-of-the-people-warning: #c5a028;
+  --gmants-hero-of-the-people-brand: #a44;
+  --gmants-hero-of-the-people-gold: #b8860b;
+  --gmants-hero-of-the-people-gold-light: #daa520;
+  --gmants-hero-of-the-people-success: #4a4;
+  --gmants-hero-of-the-people-purple: #8a7ec0;
+  --gmants-hero-of-the-people-purple-bg: rgba(90, 78, 140, 0.08);
+  --gmants-hero-of-the-people-purple-border: rgba(90, 78, 140, 0.15);
+  --gmants-hero-of-the-people-warning: #c5a028;
 
-  --hero-of-the-people-border: rgba(128, 128, 128, 0.2);
-  --hero-of-the-people-border-light: rgba(128, 128, 128, 0.15);
-  --hero-of-the-people-border-hover: rgba(128, 128, 128, 0.1);
+  --gmants-hero-of-the-people-border: rgba(128, 128, 128, 0.2);
+  --gmants-hero-of-the-people-border-light: rgba(128, 128, 128, 0.15);
+  --gmants-hero-of-the-people-border-hover: rgba(128, 128, 128, 0.1);
 
-  --hero-of-the-people-bg-inset: rgba(0, 0, 0, 0.05);
-  --hero-of-the-people-bg-subtle: rgba(0, 0, 0, 0.03);
-  --hero-of-the-people-bg-faint: rgba(0, 0, 0, 0.02);
-  --hero-of-the-people-bg-hover: rgba(0, 0, 0, 0.06);
-  --hero-of-the-people-bg-selected: rgba(0, 0, 0, 0.04);
-  --hero-of-the-people-bg-border: rgba(0, 0, 0, 0.08);
-  --hero-of-the-people-bg-shadow: rgba(0, 0, 0, 0.15);
-  --hero-of-the-people-bg-shadow-dark: rgba(0, 0, 0, 0.2);
+  --gmants-hero-of-the-people-bg-inset: rgba(0, 0, 0, 0.05);
+  --gmants-hero-of-the-people-bg-subtle: rgba(0, 0, 0, 0.03);
+  --gmants-hero-of-the-people-bg-faint: rgba(0, 0, 0, 0.02);
+  --gmants-hero-of-the-people-bg-hover: rgba(0, 0, 0, 0.06);
+  --gmants-hero-of-the-people-bg-selected: rgba(0, 0, 0, 0.04);
+  --gmants-hero-of-the-people-bg-border: rgba(0, 0, 0, 0.08);
+  --gmants-hero-of-the-people-bg-shadow: rgba(0, 0, 0, 0.15);
+  --gmants-hero-of-the-people-bg-shadow-dark: rgba(0, 0, 0, 0.2);
 }
 
 /* --- Branding Header --- */
-a.hero-of-the-people-branding {
+a.gmants-hero-of-the-people-branding {
   margin-left: auto;
   font-style: italic;
-  color: var(--hero-of-the-people-brand);
+  color: var(--gmants-hero-of-the-people-brand);
   font-size: 0.75rem;
   text-decoration: none;
 }
 
-a.hero-of-the-people-branding:hover {
+a.gmants-hero-of-the-people-branding:hover {
   text-decoration: underline;
-  color: var(--hero-of-the-people-gold-light);
+  color: var(--gmants-hero-of-the-people-gold-light);
 }
 
 /* --- Form Container --- */
-.hero-of-the-people-form {
+.gmants-hero-of-the-people-form {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -52,19 +52,19 @@ a.hero-of-the-people-branding:hover {
 }
 
 /* --- Sections --- */
-.hero-of-the-people-section {
+.gmants-hero-of-the-people-section {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
 }
 
-.hero-of-the-people-section-header {
+.gmants-hero-of-the-people-section-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.hero-of-the-people-section-header label {
+.gmants-hero-of-the-people-section-header label {
   font-weight: bold;
   font-size: 0.75rem;
   text-transform: uppercase;
@@ -73,12 +73,12 @@ a.hero-of-the-people-branding:hover {
 }
 
 /* --- Primary Button --- */
-@keyframes hero-of-the-people-shimmer {
+@keyframes gmants-hero-of-the-people-shimmer {
   0% { background-position: 200% center; }
   100% { background-position: -200% center; }
 }
 
-.hero-of-the-people .hero-of-the-people-primary-btn {
+.gmants-hero-of-the-people .gmants-hero-of-the-people-primary-btn {
   font-weight: bold;
   font-size: 1rem;
   padding: 1rem 0.5rem;
@@ -88,11 +88,11 @@ a.hero-of-the-people-branding:hover {
     linear-gradient(100deg, transparent 30%, rgba(184, 134, 11, 0.08) 50%, transparent 70%),
     linear-gradient(to bottom, rgba(184, 134, 11, 0.15), rgba(184, 134, 11, 0.05));
   background-size: 200% 100%, 100% 100%;
-  animation: hero-of-the-people-shimmer 4s ease-in-out infinite;
+  animation: gmants-hero-of-the-people-shimmer 4s ease-in-out infinite;
   transition: box-shadow 0.2s, background 0.2s;
 }
 
-.hero-of-the-people .hero-of-the-people-primary-btn:hover {
+.gmants-hero-of-the-people .gmants-hero-of-the-people-primary-btn:hover {
   box-shadow: 0 0 8px rgba(184, 134, 11, 0.3);
   background:
     linear-gradient(100deg, transparent 30%, rgba(184, 134, 11, 0.12) 50%, transparent 70%),
@@ -100,28 +100,28 @@ a.hero-of-the-people-branding:hover {
   background-size: 200% 100%, 100% 100%;
 }
 
-.hero-of-the-people .hero-of-the-people-primary-btn:active {
+.gmants-hero-of-the-people .gmants-hero-of-the-people-primary-btn:active {
   box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.4), 0 0 12px rgba(184, 134, 11, 0.4);
   background:
     linear-gradient(to bottom, rgba(184, 134, 11, 0.08), rgba(184, 134, 11, 0.2));
 }
 
-.hero-of-the-people-primary-btn i {
+.gmants-hero-of-the-people-primary-btn i {
   margin-right: 0.35rem;
 }
 
 /* --- Player List (Voting UI) --- */
-.hero-of-the-people-player-list {
+.gmants-hero-of-the-people-player-list {
   display: flex;
   flex-direction: column;
   gap: 0.15rem;
-  border: 1px solid var(--hero-of-the-people-border-light);
+  border: 1px solid var(--gmants-hero-of-the-people-border-light);
   border-radius: 4px;
   padding: 0.35rem;
-  background: var(--hero-of-the-people-bg-faint);
+  background: var(--gmants-hero-of-the-people-bg-faint);
 }
 
-.hero-of-the-people-player-entry {
+.gmants-hero-of-the-people-player-entry {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -131,45 +131,45 @@ a.hero-of-the-people-branding:hover {
   user-select: none;
 }
 
-.hero-of-the-people-player-entry:hover {
-  background: var(--hero-of-the-people-border-hover);
+.gmants-hero-of-the-people-player-entry:hover {
+  background: var(--gmants-hero-of-the-people-border-hover);
 }
 
-.hero-of-the-people-player-entry.selected {
-  background: var(--hero-of-the-people-bg-selected);
-  border: 1px solid var(--hero-of-the-people-gold);
+.gmants-hero-of-the-people-player-entry.selected {
+  background: var(--gmants-hero-of-the-people-bg-selected);
+  border: 1px solid var(--gmants-hero-of-the-people-gold);
 }
 
-.hero-of-the-people-player-entry.greyed-out {
+.gmants-hero-of-the-people-player-entry.greyed-out {
   opacity: 0.4;
   cursor: not-allowed;
 }
 
 /* --- Disabled State --- */
-.hero-of-the-people-disabled {
+.gmants-hero-of-the-people-disabled {
   opacity: 0.5;
 }
 
-.hero-of-the-people-disabled,
-.hero-of-the-people-disabled * {
+.gmants-hero-of-the-people-disabled,
+.gmants-hero-of-the-people-disabled * {
   cursor: not-allowed !important;
 }
 
 /* --- Checkbox --- */
-.hero-of-the-people-checkbox {
+.gmants-hero-of-the-people-checkbox {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   cursor: pointer;
 }
 
-.hero-of-the-people-checkbox input[type="checkbox"] {
+.gmants-hero-of-the-people-checkbox input[type="checkbox"] {
   margin: 0;
   cursor: pointer;
 }
 
 /* --- Empty State --- */
-.hero-of-the-people-empty {
+.gmants-hero-of-the-people-empty {
   text-align: center;
   opacity: 0.5;
   font-style: italic;
@@ -177,33 +177,33 @@ a.hero-of-the-people-branding:hover {
 }
 
 /* --- Secondary Button --- */
-.hero-of-the-people-secondary-btn {
+.gmants-hero-of-the-people-secondary-btn {
   font-weight: bold;
   padding: 0.5rem 0.75rem;
   cursor: pointer;
   white-space: nowrap;
 }
 
-.hero-of-the-people-secondary-btn:disabled {
+.gmants-hero-of-the-people-secondary-btn:disabled {
   opacity: 0.35;
   cursor: not-allowed;
   border-style: dashed;
 }
 
 /* --- Action Buttons Row --- */
-.hero-of-the-people-action-buttons {
+.gmants-hero-of-the-people-action-buttons {
   display: flex;
   gap: 0.5rem;
   margin-top: 0.5rem;
 }
 
-.hero-of-the-people-action-buttons .hero-of-the-people-primary-btn {
+.gmants-hero-of-the-people-action-buttons .gmants-hero-of-the-people-primary-btn {
   flex: 1;
   margin-top: 0;
 }
 
 /* --- Reminder Dialog --- */
-.hero-of-the-people-reminder-quote {
+.gmants-hero-of-the-people-reminder-quote {
   text-align: center;
   font-size: 1rem;
   font-style: italic;
@@ -211,58 +211,58 @@ a.hero-of-the-people-branding:hover {
   opacity: 0.8;
 }
 
-.hero-of-the-people-reminder-quote i {
-  color: var(--hero-of-the-people-gold);
+.gmants-hero-of-the-people-reminder-quote i {
+  color: var(--gmants-hero-of-the-people-gold);
   margin-right: 0.35rem;
 }
 
-.hero-of-the-people-elapsed {
+.gmants-hero-of-the-people-elapsed {
   text-align: center;
   font-size: 0.85rem;
   padding: 0.35rem 0.5rem;
-  background: var(--hero-of-the-people-bg-inset);
-  border: 1px solid var(--hero-of-the-people-border-light);
+  background: var(--gmants-hero-of-the-people-bg-inset);
+  border: 1px solid var(--gmants-hero-of-the-people-border-light);
   border-radius: 4px;
 }
 
-.hero-of-the-people-elapsed i {
-  color: var(--hero-of-the-people-gold);
+.gmants-hero-of-the-people-elapsed i {
+  color: var(--gmants-hero-of-the-people-gold);
   margin-right: 0.25rem;
 }
 
-.hero-of-the-people-next-vote i {
-  color: var(--hero-of-the-people-gold-light);
+.gmants-hero-of-the-people-next-vote i {
+  color: var(--gmants-hero-of-the-people-gold-light);
 }
 
-.hero-of-the-people-snooze-buttons {
+.gmants-hero-of-the-people-snooze-buttons {
   display: flex;
   flex-wrap: wrap;
   gap: 0.35rem;
 }
 
-.hero-of-the-people-snooze-buttons .hero-of-the-people-secondary-btn {
+.gmants-hero-of-the-people-snooze-buttons .gmants-hero-of-the-people-secondary-btn {
   flex: 1;
   text-align: center;
   font-size: 0.8rem;
   padding: 0.35rem 0.5rem;
 }
 
-.hero-of-the-people-advanced-content .hero-of-the-people-skip-btn {
+.gmants-hero-of-the-people-advanced-content .gmants-hero-of-the-people-skip-btn {
   opacity: 0.6;
 }
 
-.hero-of-the-people-advanced-content .hero-of-the-people-skip-btn:hover {
+.gmants-hero-of-the-people-advanced-content .gmants-hero-of-the-people-skip-btn:hover {
   opacity: 1;
 }
 
-.hero-of-the-people-snooze-until-row {
+.gmants-hero-of-the-people-snooze-until-row {
   display: flex;
   align-items: stretch;
   gap: 0.35rem;
   margin-top: 0.25rem;
 }
 
-.hero-of-the-people-snooze-time-input {
+.gmants-hero-of-the-people-snooze-time-input {
   flex: 0 0 auto;
   width: 7rem;
   font-size: 0.8rem;
@@ -271,21 +271,21 @@ a.hero-of-the-people-branding:hover {
   box-sizing: border-box;
 }
 
-.hero-of-the-people-snooze-until-row .hero-of-the-people-secondary-btn {
+.gmants-hero-of-the-people-snooze-until-row .gmants-hero-of-the-people-secondary-btn {
   flex: 1;
   font-size: 0.8rem;
   padding: 0.35rem 0.5rem;
 }
 
 /* --- Advanced Section (collapsible) --- */
-.hero-of-the-people-advanced {
+.gmants-hero-of-the-people-advanced {
   margin-top: 0.25rem;
-  border: 1px solid var(--hero-of-the-people-border);
+  border: 1px solid var(--gmants-hero-of-the-people-border);
   border-radius: 4px;
-  background: var(--hero-of-the-people-bg-faint);
+  background: var(--gmants-hero-of-the-people-bg-faint);
 }
 
-.hero-of-the-people-advanced summary {
+.gmants-hero-of-the-people-advanced summary {
   cursor: pointer;
   font-weight: bold;
   font-size: 0.75rem;
@@ -296,11 +296,11 @@ a.hero-of-the-people-branding:hover {
   list-style: none;
 }
 
-.hero-of-the-people-advanced summary::-webkit-details-marker {
+.gmants-hero-of-the-people-advanced summary::-webkit-details-marker {
   display: none;
 }
 
-.hero-of-the-people-advanced summary::before {
+.gmants-hero-of-the-people-advanced summary::before {
   content: "\f0da";
   font-family: "Font Awesome 6 Free";
   font-weight: 900;
@@ -310,15 +310,15 @@ a.hero-of-the-people-branding:hover {
   transition: transform 0.15s;
 }
 
-.hero-of-the-people-advanced[open] > summary::before {
+.gmants-hero-of-the-people-advanced[open] > summary::before {
   transform: rotate(90deg);
 }
 
-.hero-of-the-people-advanced summary i {
+.gmants-hero-of-the-people-advanced summary i {
   margin-right: 0.25rem;
 }
 
-.hero-of-the-people-advanced-content {
+.gmants-hero-of-the-people-advanced-content {
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
@@ -326,17 +326,17 @@ a.hero-of-the-people-branding:hover {
 }
 
 /* --- Reset Row + System Chip --- */
-.hero-of-the-people-reset-row {
+.gmants-hero-of-the-people-reset-row {
   display: flex;
   align-items: center;
   gap: 0.35rem;
 }
 
-.hero-of-the-people-reset-row .hero-of-the-people-secondary-btn {
+.gmants-hero-of-the-people-reset-row .gmants-hero-of-the-people-secondary-btn {
   flex: 1;
 }
 
-.hero-of-the-people-system-chip {
+.gmants-hero-of-the-people-system-chip {
   flex-shrink: 0;
   font-size: 0.65rem;
   font-weight: bold;
@@ -347,129 +347,129 @@ a.hero-of-the-people-branding:hover {
   white-space: nowrap;
 }
 
-.hero-of-the-people-system-chip--pf2e {
+.gmants-hero-of-the-people-system-chip--pf2e {
   background: rgba(120, 30, 30, 0.15);
   color: #a44;
   border: 1px solid rgba(120, 30, 30, 0.25);
 }
 
-.hero-of-the-people-system-chip--dnd5e {
+.gmants-hero-of-the-people-system-chip--dnd5e {
   background: rgba(140, 20, 20, 0.1);
   color: #922;
   border: 1px solid rgba(140, 20, 20, 0.2);
 }
 
 /* --- Voting Dialog: Player Info --- */
-.hero-of-the-people-player-info {
+.gmants-hero-of-the-people-player-info {
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
 
-.hero-of-the-people-avatar {
+.gmants-hero-of-the-people-avatar {
   width: 28px;
   height: 28px;
-  border: 1px solid var(--hero-of-the-people-bg-shadow);
+  border: 1px solid var(--gmants-hero-of-the-people-bg-shadow);
   border-radius: 3px;
   object-fit: cover;
 }
 
-.hero-of-the-people-player-icon {
+.gmants-hero-of-the-people-player-icon {
   width: 28px;
   text-align: center;
   font-size: 1rem;
-  color: var(--hero-of-the-people-gold);
+  color: var(--gmants-hero-of-the-people-gold);
 }
 
-.hero-of-the-people-player-names {
+.gmants-hero-of-the-people-player-names {
   display: flex;
   flex-direction: column;
   line-height: 1.2;
 }
 
-.hero-of-the-people-character-name {
+.gmants-hero-of-the-people-character-name {
   font-weight: bold;
   font-size: 0.85rem;
 }
 
-.hero-of-the-people-player-subname {
+.gmants-hero-of-the-people-player-subname {
   font-size: 0.7rem;
   opacity: 0.6;
 }
 
-.hero-of-the-people-player-name {
+.gmants-hero-of-the-people-player-name {
   font-weight: bold;
   font-size: 0.85rem;
 }
 
-.hero-of-the-people-greyed-reason {
+.gmants-hero-of-the-people-greyed-reason {
   font-size: 0.7rem;
   font-style: italic;
   opacity: 0.7;
-  color: var(--hero-of-the-people-warning);
+  color: var(--gmants-hero-of-the-people-warning);
 }
 
 /* --- Countdown Timer --- */
-.hero-of-the-people-countdown {
+.gmants-hero-of-the-people-countdown {
   font-size: 0.8rem;
   font-weight: bold;
-  color: var(--hero-of-the-people-gold);
+  color: var(--gmants-hero-of-the-people-gold);
 }
 
 /* --- Results Dialog: Winner Card --- */
-.hero-of-the-people-winner-card {
+.gmants-hero-of-the-people-winner-card {
   display: flex;
   align-items: center;
   gap: 0.75rem;
   padding: 0.75rem;
-  background: var(--hero-of-the-people-purple-bg);
-  border: 1px solid var(--hero-of-the-people-purple-border);
+  background: var(--gmants-hero-of-the-people-purple-bg);
+  border: 1px solid var(--gmants-hero-of-the-people-purple-border);
   border-radius: 4px;
 }
 
-.hero-of-the-people-winner-avatar {
+.gmants-hero-of-the-people-winner-avatar {
   width: 48px;
   height: 48px;
-  border: 2px solid var(--hero-of-the-people-gold);
+  border: 2px solid var(--gmants-hero-of-the-people-gold);
   border-radius: 4px;
   object-fit: cover;
 }
 
-.hero-of-the-people-winner-info {
+.gmants-hero-of-the-people-winner-info {
   display: flex;
   flex-direction: column;
   flex: 1;
   line-height: 1.3;
 }
 
-.hero-of-the-people-winner-label {
+.gmants-hero-of-the-people-winner-label {
   font-size: 0.7rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   opacity: 0.6;
 }
 
-.hero-of-the-people-winner-name {
+.gmants-hero-of-the-people-winner-name {
   font-weight: bold;
   font-size: 1.1rem;
-  color: var(--hero-of-the-people-gold);
+  color: var(--gmants-hero-of-the-people-gold);
 }
 
-.hero-of-the-people-winner-player {
+.gmants-hero-of-the-people-winner-player {
   font-size: 0.75rem;
   opacity: 0.6;
 }
 
-.hero-of-the-people-winner-votes {
+.gmants-hero-of-the-people-winner-votes {
   display: flex;
   flex-direction: column;
   align-items: center;
   font-size: 1.2rem;
   font-weight: bold;
-  color: var(--hero-of-the-people-success);
+  color: var(--gmants-hero-of-the-people-success);
 }
 
-.hero-of-the-people-votes-label {
+.gmants-hero-of-the-people-votes-label {
   font-size: 0.65rem;
   text-transform: uppercase;
   opacity: 0.6;
@@ -477,17 +477,17 @@ a.hero-of-the-people-branding:hover {
 }
 
 /* --- Results Dialog: Vote Breakdown --- */
-.hero-of-the-people-breakdown-list {
+.gmants-hero-of-the-people-breakdown-list {
   display: flex;
   flex-direction: column;
   gap: 0.15rem;
-  border: 1px solid var(--hero-of-the-people-border-light);
+  border: 1px solid var(--gmants-hero-of-the-people-border-light);
   border-radius: 4px;
   padding: 0.35rem;
-  background: var(--hero-of-the-people-bg-faint);
+  background: var(--gmants-hero-of-the-people-bg-faint);
 }
 
-.hero-of-the-people-breakdown-row {
+.gmants-hero-of-the-people-breakdown-row {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -495,59 +495,59 @@ a.hero-of-the-people-branding:hover {
   font-size: 0.8rem;
 }
 
-.hero-of-the-people-breakdown-voter {
+.gmants-hero-of-the-people-breakdown-voter {
   flex: 1;
   opacity: 0.7;
 }
 
-.hero-of-the-people-breakdown-arrow {
+.gmants-hero-of-the-people-breakdown-arrow {
   font-size: 0.65rem;
   opacity: 0.4;
 }
 
-.hero-of-the-people-breakdown-target {
+.gmants-hero-of-the-people-breakdown-target {
   flex: 1;
   font-weight: bold;
 }
 
 /* --- Results Dialog: Override --- */
-.hero-of-the-people-override-row {
+.gmants-hero-of-the-people-override-row {
   display: flex;
   gap: 0.35rem;
 }
 
-.hero-of-the-people-override-select {
+.gmants-hero-of-the-people-override-select {
   flex: 1;
 }
 
 /* --- Chat Card --- */
-.hero-of-the-people-chat-card {
+.gmants-hero-of-the-people-chat-card {
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
   padding: 0.25rem 0;
 }
 
-.hero-of-the-people-chat-header {
+.gmants-hero-of-the-people-chat-header {
   font-size: 1rem;
 }
 
-.hero-of-the-people-chat-header i {
-  color: var(--hero-of-the-people-gold);
+.gmants-hero-of-the-people-chat-header i {
+  color: var(--gmants-hero-of-the-people-gold);
   margin-right: 0.25rem;
 }
 
-.hero-of-the-people-chat-award {
+.gmants-hero-of-the-people-chat-award {
   font-size: 0.85rem;
-  color: var(--hero-of-the-people-success);
+  color: var(--gmants-hero-of-the-people-success);
 }
 
-.hero-of-the-people-chat-quote {
+.gmants-hero-of-the-people-chat-quote {
   font-size: 0.8rem;
   opacity: 0.6;
 }
 
-.hero-of-the-people-chat-author {
+.gmants-hero-of-the-people-chat-author {
   display: block;
   font-size: 0.75rem;
   font-style: normal;
@@ -555,171 +555,171 @@ a.hero-of-the-people-branding:hover {
   margin-top: 0.15rem;
 }
 
-.hero-of-the-people-chat-open-link {
+.gmants-hero-of-the-people-chat-open-link {
   display: inline-block;
   margin-top: 0.35rem;
   font-weight: bold;
   font-size: 0.85rem;
-  color: var(--hero-of-the-people-gold);
+  color: var(--gmants-hero-of-the-people-gold);
   cursor: pointer;
   text-decoration: none;
 }
 
-.hero-of-the-people-chat-open-link:hover {
+.gmants-hero-of-the-people-chat-open-link:hover {
   text-decoration: underline;
-  color: var(--hero-of-the-people-gold-light);
+  color: var(--gmants-hero-of-the-people-gold-light);
 }
 
-.hero-of-the-people-chat-open-link i {
+.gmants-hero-of-the-people-chat-open-link i {
   margin-right: 0.2rem;
 }
 
 /* --- Hero Hype Section --- */
-.hero-of-the-people-hype-section {
+.gmants-hero-of-the-people-hype-section {
   margin-top: 0.25rem;
   padding: 0.5rem;
-  background: var(--hero-of-the-people-purple-bg);
-  border: 1px solid var(--hero-of-the-people-purple-border);
+  background: var(--gmants-hero-of-the-people-purple-bg);
+  border: 1px solid var(--gmants-hero-of-the-people-purple-border);
   border-radius: 4px;
 }
 
-.hero-of-the-people-hype-section .hero-of-the-people-section-header label {
-  color: var(--hero-of-the-people-purple);
+.gmants-hero-of-the-people-hype-section .gmants-hero-of-the-people-section-header label {
+  color: var(--gmants-hero-of-the-people-purple);
 }
 
-.hero-of-the-people-hype-section .hero-of-the-people-section-header label i {
+.gmants-hero-of-the-people-hype-section .gmants-hero-of-the-people-section-header label i {
   margin-right: 0.25rem;
 }
 
-.hero-of-the-people-hype-target-row {
+.gmants-hero-of-the-people-hype-target-row {
   display: flex;
   align-items: center;
   gap: 0.35rem;
 }
 
-.hero-of-the-people-hype-target-row label {
+.gmants-hero-of-the-people-hype-target-row label {
   font-size: 0.8rem;
   white-space: nowrap;
 }
 
-.hero-of-the-people-hype-target-select {
+.gmants-hero-of-the-people-hype-target-select {
   flex: 1;
 }
 
-.hero-of-the-people-hype-tags {
+.gmants-hero-of-the-people-hype-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 0.35rem;
 }
 
-.hero-of-the-people-hype-tag {
+.gmants-hero-of-the-people-hype-tag {
   font-size: 0.8rem;
   padding: 0.15rem 0.35rem;
-  background: var(--hero-of-the-people-bg-subtle);
-  border: 1px solid var(--hero-of-the-people-border-light);
+  background: var(--gmants-hero-of-the-people-bg-subtle);
+  border: 1px solid var(--gmants-hero-of-the-people-border-light);
   border-radius: 3px;
 }
 
-.hero-of-the-people-hype-tag i {
-  color: var(--hero-of-the-people-purple);
+.gmants-hero-of-the-people-hype-tag i {
+  color: var(--gmants-hero-of-the-people-purple);
   margin-right: 0.15rem;
 }
 
-.hero-of-the-people-hype-textarea {
+.gmants-hero-of-the-people-hype-textarea {
   width: 100%;
   resize: vertical;
   font-size: 0.8rem;
   padding: 0.35rem;
-  border: 1px solid var(--hero-of-the-people-border-light);
+  border: 1px solid var(--gmants-hero-of-the-people-border-light);
   border-radius: 3px;
-  background: var(--hero-of-the-people-bg-faint);
+  background: var(--gmants-hero-of-the-people-bg-faint);
   font-family: inherit;
 }
 
-.hero-of-the-people-hype-textarea::placeholder {
+.gmants-hero-of-the-people-hype-textarea::placeholder {
   font-style: italic;
   opacity: 0.5;
 }
 
 /* --- Results Dialog: Hype Display --- */
-.hero-of-the-people-hype-list {
+.gmants-hero-of-the-people-hype-list {
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
-  border: 1px solid var(--hero-of-the-people-purple-border);
+  border: 1px solid var(--gmants-hero-of-the-people-purple-border);
   border-radius: 4px;
   padding: 0.35rem;
-  background: var(--hero-of-the-people-purple-bg);
+  background: var(--gmants-hero-of-the-people-purple-bg);
 }
 
-.hero-of-the-people-hype-entry {
+.gmants-hero-of-the-people-hype-entry {
   display: flex;
   flex-direction: column;
   gap: 0.15rem;
   padding: 0.25rem 0.35rem;
-  border-bottom: 1px solid var(--hero-of-the-people-border-light);
+  border-bottom: 1px solid var(--gmants-hero-of-the-people-border-light);
 }
 
-.hero-of-the-people-hype-entry:last-child {
+.gmants-hero-of-the-people-hype-entry:last-child {
   border-bottom: none;
 }
 
-.hero-of-the-people-hype-entry-target {
+.gmants-hero-of-the-people-hype-entry-target {
   font-size: 0.85rem;
 }
 
-.hero-of-the-people-hype-entry-tags {
+.gmants-hero-of-the-people-hype-entry-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 0.25rem;
 }
 
-.hero-of-the-people-hype-badge {
+.gmants-hero-of-the-people-hype-badge {
   font-size: 0.65rem;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  background: var(--hero-of-the-people-purple-border);
-  color: var(--hero-of-the-people-purple);
+  background: var(--gmants-hero-of-the-people-purple-border);
+  color: var(--gmants-hero-of-the-people-purple);
   padding: 0.05rem 0.3rem;
   border-radius: 3px;
   font-weight: bold;
 }
 
-.hero-of-the-people-hype-badge i {
+.gmants-hero-of-the-people-hype-badge i {
   margin-right: 0.15rem;
 }
 
-.hero-of-the-people-hype-entry-message {
+.gmants-hero-of-the-people-hype-entry-message {
   font-size: 0.8rem;
   font-style: italic;
   opacity: 0.8;
 }
 
 /* --- Vote Monitor Dialog --- */
-.hero-of-the-people-monitor-header {
+.gmants-hero-of-the-people-monitor-header {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   font-size: 1rem;
   font-weight: bold;
   padding: 0.5rem;
-  background: var(--hero-of-the-people-bg-inset);
-  border: 1px solid var(--hero-of-the-people-border-light);
+  background: var(--gmants-hero-of-the-people-bg-inset);
+  border: 1px solid var(--gmants-hero-of-the-people-border-light);
   border-radius: 4px;
 }
 
-.hero-of-the-people-monitor-header i {
-  color: var(--hero-of-the-people-gold);
+.gmants-hero-of-the-people-monitor-header i {
+  color: var(--gmants-hero-of-the-people-gold);
 }
 
-.hero-of-the-people-monitor-timer {
+.gmants-hero-of-the-people-monitor-timer {
   margin-left: auto;
   font-size: 0.85rem;
   font-weight: bold;
-  color: var(--hero-of-the-people-gold);
+  color: var(--gmants-hero-of-the-people-gold);
 }
 
-.hero-of-the-people-monitor-progress {
+.gmants-hero-of-the-people-monitor-progress {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -727,46 +727,46 @@ a.hero-of-the-people-branding:hover {
   padding: 0.25rem 0;
 }
 
-.hero-of-the-people-monitor-bar {
+.gmants-hero-of-the-people-monitor-bar {
   flex: 1;
   height: 8px;
-  background: var(--hero-of-the-people-bg-inset);
-  border: 1px solid var(--hero-of-the-people-border-light);
+  background: var(--gmants-hero-of-the-people-bg-inset);
+  border: 1px solid var(--gmants-hero-of-the-people-border-light);
   border-radius: 4px;
   overflow: hidden;
   min-width: 100px;
 }
 
-.hero-of-the-people-monitor-bar-fill {
+.gmants-hero-of-the-people-monitor-bar-fill {
   height: 100%;
-  background: linear-gradient(to right, var(--hero-of-the-people-gold), var(--hero-of-the-people-gold-light));
+  background: linear-gradient(to right, var(--gmants-hero-of-the-people-gold), var(--gmants-hero-of-the-people-gold-light));
   border-radius: 4px;
   transition: width 0.3s ease;
 }
 
-.hero-of-the-people-monitor-count {
+.gmants-hero-of-the-people-monitor-count {
   font-weight: bold;
   font-size: 0.9rem;
-  color: var(--hero-of-the-people-gold);
+  color: var(--gmants-hero-of-the-people-gold);
 }
 
-.hero-of-the-people-monitor-count-label {
+.gmants-hero-of-the-people-monitor-count-label {
   font-size: 0.75rem;
   opacity: 0.6;
 }
 
 /* --- Voter List (Monitor) --- */
-.hero-of-the-people-voter-list {
+.gmants-hero-of-the-people-voter-list {
   display: flex;
   flex-direction: column;
   gap: 0.15rem;
-  border: 1px solid var(--hero-of-the-people-border-light);
+  border: 1px solid var(--gmants-hero-of-the-people-border-light);
   border-radius: 4px;
   padding: 0.35rem;
-  background: var(--hero-of-the-people-bg-faint);
+  background: var(--gmants-hero-of-the-people-bg-faint);
 }
 
-.hero-of-the-people-voter-row {
+.gmants-hero-of-the-people-voter-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -775,61 +775,61 @@ a.hero-of-the-people-branding:hover {
   font-size: 0.85rem;
 }
 
-.hero-of-the-people-voter-name {
+.gmants-hero-of-the-people-voter-name {
   display: flex;
   align-items: center;
   gap: 0.35rem;
 }
 
-.hero-of-the-people-voter-player {
+.gmants-hero-of-the-people-voter-player {
   font-size: 0.7rem;
   opacity: 0.5;
 }
 
-.hero-of-the-people-voter-gm {
+.gmants-hero-of-the-people-voter-gm {
   font-size: 0.6rem;
   font-weight: bold;
   text-transform: uppercase;
-  background: var(--hero-of-the-people-brand);
+  background: var(--gmants-hero-of-the-people-brand);
   color: white;
   padding: 0 0.25rem;
   border-radius: 2px;
   letter-spacing: 0.03em;
 }
 
-.hero-of-the-people-voter-status {
+.gmants-hero-of-the-people-voter-status {
   font-size: 0.85rem;
 }
 
-.hero-of-the-people-voter-status.voted {
-  color: var(--hero-of-the-people-success);
+.gmants-hero-of-the-people-voter-status.voted {
+  color: var(--gmants-hero-of-the-people-success);
 }
 
-.hero-of-the-people-voter-status.waiting {
-  color: var(--hero-of-the-people-warning);
+.gmants-hero-of-the-people-voter-status.waiting {
+  color: var(--gmants-hero-of-the-people-warning);
   opacity: 0.5;
 }
 
 /* --- GM Vote Row (Monitor) --- */
-.hero-of-the-people-gm-vote-row {
+.gmants-hero-of-the-people-gm-vote-row {
   display: flex;
   gap: 0.35rem;
 }
 
-.hero-of-the-people-gm-vote-select {
+.gmants-hero-of-the-people-gm-vote-select {
   flex: 1;
 }
 
 /* --- Hype Indicator (Monitor voter rows) --- */
-.hero-of-the-people-hype-icon {
-  color: var(--hero-of-the-people-brand);
+.gmants-hero-of-the-people-hype-icon {
+  color: var(--gmants-hero-of-the-people-brand);
   font-size: 0.75rem;
   margin-left: auto;
   margin-right: 0.35rem;
 }
 
 /* --- Back Button (Results → Monitor) --- */
-.hero-of-the-people-back-btn {
+.gmants-hero-of-the-people-back-btn {
   background: none;
   border: none;
   cursor: pointer;
@@ -839,25 +839,25 @@ a.hero-of-the-people-branding:hover {
   text-align: left;
 }
 
-.hero-of-the-people-back-btn:hover {
+.gmants-hero-of-the-people-back-btn:hover {
   opacity: 1;
 }
 
-.hero-of-the-people-back-btn i {
+.gmants-hero-of-the-people-back-btn i {
   margin-right: 0.25rem;
 }
 
 /* --- Chat: Hype Card --- */
-.hero-of-the-people-chat-hype-tags {
+.gmants-hero-of-the-people-chat-hype-tags {
   font-size: 0.8rem;
-  color: var(--hero-of-the-people-purple);
+  color: var(--gmants-hero-of-the-people-purple);
 }
 
-.hero-of-the-people-chat-hype-tags i {
+.gmants-hero-of-the-people-chat-hype-tags i {
   margin-right: 0.15rem;
 }
 
-.hero-of-the-people-chat-hype-message {
+.gmants-hero-of-the-people-chat-hype-message {
   font-size: 0.85rem;
   font-style: italic;
   opacity: 0.8;
@@ -865,14 +865,14 @@ a.hero-of-the-people-branding:hover {
 
 /* --- Quote Config Dialog --- */
 
-.hero-of-the-people-quote-config-desc {
+.gmants-hero-of-the-people-quote-config-desc {
   font-size: 0.8rem;
   opacity: 0.7;
   font-style: italic;
   margin: 0 0 0.5rem;
 }
 
-.hero-of-the-people-quote-list {
+.gmants-hero-of-the-people-quote-list {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
@@ -881,7 +881,7 @@ a.hero-of-the-people-branding:hover {
   margin-bottom: 0.75rem;
 }
 
-.hero-of-the-people-quote-row {
+.gmants-hero-of-the-people-quote-row {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -891,41 +891,41 @@ a.hero-of-the-people-branding:hover {
   background: rgba(255, 255, 255, 0.03);
 }
 
-.hero-of-the-people-quote-row:hover {
+.gmants-hero-of-the-people-quote-row:hover {
   background: rgba(255, 255, 255, 0.06);
 }
 
-.hero-of-the-people-quote-deleted {
+.gmants-hero-of-the-people-quote-deleted {
   opacity: 0.4;
 }
 
-.hero-of-the-people-quote-deleted .hero-of-the-people-quote-text {
+.gmants-hero-of-the-people-quote-deleted .gmants-hero-of-the-people-quote-text {
   text-decoration: line-through;
 }
 
-.hero-of-the-people-quote-content {
+.gmants-hero-of-the-people-quote-content {
   flex: 1;
   min-width: 0;
 }
 
-.hero-of-the-people-quote-text {
+.gmants-hero-of-the-people-quote-text {
   display: block;
   font-size: 0.8rem;
   font-style: italic;
 }
 
-.hero-of-the-people-quote-author {
+.gmants-hero-of-the-people-quote-author {
   display: block;
   font-size: 0.7rem;
   opacity: 0.6;
   margin-top: 0.1rem;
 }
 
-.hero-of-the-people-quote-actions {
+.gmants-hero-of-the-people-quote-actions {
   flex-shrink: 0;
 }
 
-.hero-of-the-people-icon-btn {
+.gmants-hero-of-the-people-icon-btn {
   background: none;
   border: none;
   cursor: pointer;
@@ -934,28 +934,28 @@ a.hero-of-the-people-branding:hover {
   padding: 0.2rem 0.35rem;
 }
 
-.hero-of-the-people-icon-btn:hover {
+.gmants-hero-of-the-people-icon-btn:hover {
   opacity: 1;
 }
 
-.hero-of-the-people-quote-add-form {
+.gmants-hero-of-the-people-quote-add-form {
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
 }
 
-.hero-of-the-people-quote-add-form input {
+.gmants-hero-of-the-people-quote-add-form input {
   width: 100%;
   font-size: 0.8rem;
 }
 
-.hero-of-the-people-quote-config-footer {
+.gmants-hero-of-the-people-quote-config-footer {
   margin-top: 0.75rem;
   text-align: center;
 }
 
 /* --- Hero Point Reroll Button (PF2e Chat Cards) --- */
-.hero-of-the-people-reroll-btn {
+.gmants-hero-of-the-people-reroll-btn {
   display: inline-flex !important;
   align-items: center;
   justify-content: center;
@@ -965,22 +965,22 @@ a.hero-of-the-people-branding:hover {
   height: 1.75rem !important;
   flex: 0 0 1.75rem !important;
   padding: 0 !important;
-  border: 1px solid var(--hero-of-the-people-gold);
+  border: 1px solid var(--gmants-hero-of-the-people-gold);
   border-radius: 3px;
   background: linear-gradient(to bottom, rgba(184, 134, 11, 0.15), rgba(184, 134, 11, 0.05));
-  color: var(--hero-of-the-people-gold);
+  color: var(--gmants-hero-of-the-people-gold);
   font-size: 0.85rem;
   cursor: pointer;
   transition: background 0.2s, border-color 0.2s, color 0.2s;
 }
 
-.hero-of-the-people-reroll-btn:hover {
+.gmants-hero-of-the-people-reroll-btn:hover {
   background: linear-gradient(to bottom, rgba(184, 134, 11, 0.3), rgba(184, 134, 11, 0.12));
-  border-color: var(--hero-of-the-people-gold-light);
-  color: var(--hero-of-the-people-gold-light);
+  border-color: var(--gmants-hero-of-the-people-gold-light);
+  color: var(--gmants-hero-of-the-people-gold-light);
 }
 
-.hero-of-the-people-reroll-remaining {
+.gmants-hero-of-the-people-reroll-remaining {
   font-size: 0.8rem;
   opacity: 0.6;
   font-style: italic;

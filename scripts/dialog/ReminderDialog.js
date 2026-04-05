@@ -149,7 +149,7 @@ export class ReminderDialog extends HandlebarsApplicationMixin(ApplicationV2) {
   }
 
   static #onSnoozeUntil(event, target) {
-    const input = this.element.querySelector(".hero-of-the-people-snooze-time-input");
+    const input = this.element.querySelector(".gmants-hero-of-the-people-snooze-time-input");
     if (!input?.value) return;
     const [hours, mins] = input.value.split(":").map(Number);
     const now = new Date();

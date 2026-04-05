@@ -1,17 +1,15 @@
 node_modules/
-packs/**/*.ldb
-packs/**/*.log
-packs/**/CURRENT
-packs/**/LOCK
-packs/**/LOG
-packs/**/LOG.old
-packs/**/MANIFEST-*
 .DS_Store
 Thumbs.db
 *.log
 
+# LevelDB runtime files (not the data itself)
+packs/**/LOCK
+packs/**/LOG
+packs/**/LOG.old
+
 # Development docs — not shipped with module
-*.md
+CLAUDE.md
 Reference/
 Implementation/
-CLAUDE.md
+docs/

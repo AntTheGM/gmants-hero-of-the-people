@@ -1,35 +1,35 @@
-<div class="hero-of-the-people-form">
+<div class="gmants-hero-of-the-people-form">
 {{#if isMonitoring}}
   {{!-- ==================== MONITORING PHASE ==================== --}}
 
-  <div class="hero-of-the-people-monitor-header">
+  <div class="gmants-hero-of-the-people-monitor-header">
     <i class="fas fa-poll"></i> {{localize "HERO_OF_THE_PEOPLE.Monitor.InProgress"}}
-    {{#if hasTimer}}<span class="hero-of-the-people-monitor-timer">{{secondsLeft}}s</span>{{/if}}
+    {{#if hasTimer}}<span class="gmants-hero-of-the-people-monitor-timer">{{secondsLeft}}s</span>{{/if}}
   </div>
 
   {{!-- Vote progress bar --}}
-  <div class="hero-of-the-people-monitor-progress">
-    <div class="hero-of-the-people-monitor-bar">
-      <div class="hero-of-the-people-monitor-bar-fill" style="width: {{progressPct}}%"></div>
+  <div class="gmants-hero-of-the-people-monitor-progress">
+    <div class="gmants-hero-of-the-people-monitor-bar">
+      <div class="gmants-hero-of-the-people-monitor-bar-fill" style="width: {{progressPct}}%"></div>
     </div>
-    <span class="hero-of-the-people-monitor-count">{{voteCount}} / {{expectedCount}}</span>
-    <span class="hero-of-the-people-monitor-count-label">{{localize "HERO_OF_THE_PEOPLE.Monitor.VotesReceived"}}</span>
+    <span class="gmants-hero-of-the-people-monitor-count">{{voteCount}} / {{expectedCount}}</span>
+    <span class="gmants-hero-of-the-people-monitor-count-label">{{localize "HERO_OF_THE_PEOPLE.Monitor.VotesReceived"}}</span>
   </div>
 
   {{!-- Voter status list --}}
-  <div class="hero-of-the-people-section">
-    <div class="hero-of-the-people-section-header">
+  <div class="gmants-hero-of-the-people-section">
+    <div class="gmants-hero-of-the-people-section-header">
       <label>{{localize "HERO_OF_THE_PEOPLE.Monitor.Voters"}}</label>
     </div>
-    <div class="hero-of-the-people-voter-list">
+    <div class="gmants-hero-of-the-people-voter-list">
       {{#each voters}}
-      <div class="hero-of-the-people-voter-row" data-voter-id="{{userId}}">
-        <span class="hero-of-the-people-voter-name">
+      <div class="gmants-hero-of-the-people-voter-row" data-voter-id="{{userId}}">
+        <span class="gmants-hero-of-the-people-voter-name">
           {{name}}
-          <span class="hero-of-the-people-voter-player">({{playerName}})</span>
+          <span class="gmants-hero-of-the-people-voter-player">({{playerName}})</span>
         </span>
-        {{#if hasHype}}<i class="fas fa-fire hero-of-the-people-hype-icon" title="{{localize "HERO_OF_THE_PEOPLE.Hype.Title"}}"></i>{{/if}}
-        <span class="hero-of-the-people-voter-status {{#if voted}}voted{{else}}waiting{{/if}}">
+        {{#if hasHype}}<i class="fas fa-fire gmants-hero-of-the-people-hype-icon" title="{{localize "HERO_OF_THE_PEOPLE.Hype.Title"}}"></i>{{/if}}
+        <span class="gmants-hero-of-the-people-voter-status {{#if voted}}voted{{else}}waiting{{/if}}">
           {{#if voted}}<i class="fas fa-check-circle"></i>{{else}}<i class="fas fa-hourglass-half"></i>{{/if}}
         </span>
       </div>
@@ -38,44 +38,44 @@
   </div>
 
   {{!-- End Voting button --}}
-  <button type="button" class="hero-of-the-people-primary-btn" data-action="endVoting">
+  <button type="button" class="gmants-hero-of-the-people-primary-btn" data-action="endVoting">
     <i class="fas fa-stop"></i> {{localize "HERO_OF_THE_PEOPLE.Monitor.EndVoting"}}
   </button>
 
 {{else}}
   {{!-- ==================== RESULTS PHASE ==================== --}}
 
-  <button type="button" class="hero-of-the-people-back-btn" data-action="backToMonitor">
+  <button type="button" class="gmants-hero-of-the-people-back-btn" data-action="backToMonitor">
     <i class="fas fa-arrow-left"></i> {{localize "HERO_OF_THE_PEOPLE.Monitor.BackToMonitor"}}
   </button>
 
   {{!-- Winner highlight --}}
-  <div class="hero-of-the-people-winner-card">
+  <div class="gmants-hero-of-the-people-winner-card">
     {{#if results.winnerImg}}
-    <img class="hero-of-the-people-winner-avatar" src="{{results.winnerImg}}" alt="{{results.winnerName}}" />
+    <img class="gmants-hero-of-the-people-winner-avatar" src="{{results.winnerImg}}" alt="{{results.winnerName}}" />
     {{/if}}
-    <div class="hero-of-the-people-winner-info">
-      <span class="hero-of-the-people-winner-label">{{localize "HERO_OF_THE_PEOPLE.Results.Winner"}}</span>
-      <span class="hero-of-the-people-winner-name">{{results.winnerName}}</span>
-      <span class="hero-of-the-people-winner-player">{{results.winnerPlayerName}}</span>
+    <div class="gmants-hero-of-the-people-winner-info">
+      <span class="gmants-hero-of-the-people-winner-label">{{localize "HERO_OF_THE_PEOPLE.Results.Winner"}}</span>
+      <span class="gmants-hero-of-the-people-winner-name">{{results.winnerName}}</span>
+      <span class="gmants-hero-of-the-people-winner-player">{{results.winnerPlayerName}}</span>
     </div>
-    <div class="hero-of-the-people-winner-votes">
+    <div class="gmants-hero-of-the-people-winner-votes">
       {{results.voteCount}} / {{results.totalVotes}}
-      <span class="hero-of-the-people-votes-label">{{localize "HERO_OF_THE_PEOPLE.Results.Votes"}}</span>
+      <span class="gmants-hero-of-the-people-votes-label">{{localize "HERO_OF_THE_PEOPLE.Results.Votes"}}</span>
     </div>
   </div>
 
   {{!-- Vote breakdown --}}
-  <div class="hero-of-the-people-section">
-    <div class="hero-of-the-people-section-header">
+  <div class="gmants-hero-of-the-people-section">
+    <div class="gmants-hero-of-the-people-section-header">
       <label>{{localize "HERO_OF_THE_PEOPLE.Results.Breakdown"}}</label>
     </div>
-    <div class="hero-of-the-people-breakdown-list">
+    <div class="gmants-hero-of-the-people-breakdown-list">
       {{#each results.breakdown}}
-      <div class="hero-of-the-people-breakdown-row">
-        <span class="hero-of-the-people-breakdown-voter">{{voterName}}</span>
-        <i class="fas fa-arrow-right hero-of-the-people-breakdown-arrow"></i>
-        <span class="hero-of-the-people-breakdown-target">{{targetName}}</span>
+      <div class="gmants-hero-of-the-people-breakdown-row">
+        <span class="gmants-hero-of-the-people-breakdown-voter">{{voterName}}</span>
+        <i class="fas fa-arrow-right gmants-hero-of-the-people-breakdown-arrow"></i>
+        <span class="gmants-hero-of-the-people-breakdown-target">{{targetName}}</span>
       </div>
       {{/each}}
     </div>
@@ -83,62 +83,62 @@
 
   {{!-- Hero Hype section --}}
   {{#if hasHype}}
-  <div class="hero-of-the-people-section">
-    <div class="hero-of-the-people-section-header">
+  <div class="gmants-hero-of-the-people-section">
+    <div class="gmants-hero-of-the-people-section-header">
       <label><i class="fas fa-fire"></i> {{localize "HERO_OF_THE_PEOPLE.Hype.Title"}}</label>
     </div>
-    <div class="hero-of-the-people-hype-list">
+    <div class="gmants-hero-of-the-people-hype-list">
       {{#each hypeEntries}}
-      <div class="hero-of-the-people-hype-entry">
-        <div class="hero-of-the-people-hype-entry-target">
+      <div class="gmants-hero-of-the-people-hype-entry">
+        <div class="gmants-hero-of-the-people-hype-entry-target">
           <strong>{{targetName}}</strong>
         </div>
         {{#if tags.length}}
-        <div class="hero-of-the-people-hype-entry-tags">
+        <div class="gmants-hero-of-the-people-hype-entry-tags">
           {{#each tags}}
-          <span class="hero-of-the-people-hype-badge"><i class="{{icon}}"></i> {{label}}</span>
+          <span class="gmants-hero-of-the-people-hype-badge"><i class="{{icon}}"></i> {{label}}</span>
           {{/each}}
         </div>
         {{/if}}
         {{#if message}}
-        <div class="hero-of-the-people-hype-entry-message">&ldquo;{{message}}&rdquo;</div>
+        <div class="gmants-hero-of-the-people-hype-entry-message">&ldquo;{{message}}&rdquo;</div>
         {{/if}}
       </div>
       {{/each}}
     </div>
-    <button type="button" class="hero-of-the-people-secondary-btn" data-action="postHype">
+    <button type="button" class="gmants-hero-of-the-people-secondary-btn" data-action="postHype">
       <i class="fas fa-bullhorn"></i> {{localize "HERO_OF_THE_PEOPLE.Hype.PostToChat"}}
     </button>
   </div>
   {{/if}}
 
   {{!-- Accept button --}}
-  <div class="hero-of-the-people-action-buttons">
-    <button type="button" class="hero-of-the-people-primary-btn" data-action="accept">
+  <div class="gmants-hero-of-the-people-action-buttons">
+    <button type="button" class="gmants-hero-of-the-people-primary-btn" data-action="accept">
       <i class="fas fa-check"></i> {{localize "HERO_OF_THE_PEOPLE.Button.Accept"}}
     </button>
   </div>
 
   {{!-- Override section --}}
-  <div class="hero-of-the-people-section">
-    <div class="hero-of-the-people-section-header">
+  <div class="gmants-hero-of-the-people-section">
+    <div class="gmants-hero-of-the-people-section-header">
       <label>{{localize "HERO_OF_THE_PEOPLE.Button.Override"}}</label>
     </div>
-    <div class="hero-of-the-people-override-row">
-      <select class="hero-of-the-people-override-select">
+    <div class="gmants-hero-of-the-people-override-row">
+      <select class="gmants-hero-of-the-people-override-select">
         {{#each overrideCandidates}}
         <option value="{{actorId}}" {{#if isWinner}}selected{{/if}}>{{name}}</option>
         {{/each}}
       </select>
-      <button type="button" class="hero-of-the-people-secondary-btn" data-action="override">
+      <button type="button" class="gmants-hero-of-the-people-secondary-btn" data-action="override">
         <i class="fas fa-crown"></i> {{localize "HERO_OF_THE_PEOPLE.Button.Override"}}
       </button>
     </div>
   </div>
 
   {{!-- Done button (hidden until accept/override is clicked) --}}
-  <div class="hero-of-the-people-action-buttons">
-    <button type="button" class="hero-of-the-people-primary-btn hero-of-the-people-done-btn" data-action="done" style="display: none;">
+  <div class="gmants-hero-of-the-people-action-buttons">
+    <button type="button" class="gmants-hero-of-the-people-primary-btn gmants-hero-of-the-people-done-btn" data-action="done" style="display: none;">
       <i class="fas fa-times"></i> {{localize "HERO_OF_THE_PEOPLE.Monitor.Done"}}
     </button>
   </div>

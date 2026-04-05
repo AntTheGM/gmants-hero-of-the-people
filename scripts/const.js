@@ -1,4 +1,4 @@
-export const MODULE_ID = "hero-of-the-people";
+export const MODULE_ID = "gmants-hero-of-the-people";
 
 export const SOCKET_NAME = `module.${MODULE_ID}`;
 

@@ -11,7 +11,6 @@ import { awardHeroPoint, trackSessionWinner } from "./awarding.js";
 import { postStartupChat } from "./chat/startup-message.js";
 import { postWinnerChat } from "./chat/winner-message.js";
 import { HeroOfThePeopleAPI } from "./api.js";
-import { CompendiumSeeder } from "./seeding/CompendiumSeeder.js";
 import { getPlayerCharacter, getEligibleActors } from "./utils.js";
 import { onRenderChatMessage as injectRerollButton } from "./reroll/reroll-button.js";
 
@@ -67,9 +66,6 @@ Hooks.once("ready", async () => {
   });
 
   if (game.user.isGM) {
-    // Seed compendium macro
-    await CompendiumSeeder.seedMacro();
-
     // Post startup chat (visible to everyone)
     postStartupChat();
 
@@ -96,8 +92,8 @@ Hooks.on("renderSettingsConfig", (app, html) => {
 
 // Bind click handler for the "Open" link in chat messages + inject reroll buttons
 Hooks.on("renderChatMessage", (message, html) => {
-  const link = html[0]?.querySelector?.(".hero-of-the-people-chat-open-link")
-    ?? html.querySelector?.(".hero-of-the-people-chat-open-link");
+  const link = html[0]?.querySelector?.(".gmants-hero-of-the-people-chat-open-link")
+    ?? html.querySelector?.(".gmants-hero-of-the-people-chat-open-link");
   if (link) {
     link.addEventListener("click", (e) => {
       e.preventDefault();

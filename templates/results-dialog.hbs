@@ -1,31 +1,31 @@
-<div class="hero-of-the-people-form">
+<div class="gmants-hero-of-the-people-form">
   {{!-- Winner highlight --}}
-  <div class="hero-of-the-people-winner-card">
+  <div class="gmants-hero-of-the-people-winner-card">
     {{#if results.winnerImg}}
-    <img class="hero-of-the-people-winner-avatar" src="{{results.winnerImg}}" alt="{{results.winnerName}}" />
+    <img class="gmants-hero-of-the-people-winner-avatar" src="{{results.winnerImg}}" alt="{{results.winnerName}}" />
     {{/if}}
-    <div class="hero-of-the-people-winner-info">
-      <span class="hero-of-the-people-winner-label">{{localize "HERO_OF_THE_PEOPLE.Results.Winner"}}</span>
-      <span class="hero-of-the-people-winner-name">{{results.winnerName}}</span>
-      <span class="hero-of-the-people-winner-player">{{results.winnerPlayerName}}</span>
+    <div class="gmants-hero-of-the-people-winner-info">
+      <span class="gmants-hero-of-the-people-winner-label">{{localize "HERO_OF_THE_PEOPLE.Results.Winner"}}</span>
+      <span class="gmants-hero-of-the-people-winner-name">{{results.winnerName}}</span>
+      <span class="gmants-hero-of-the-people-winner-player">{{results.winnerPlayerName}}</span>
     </div>
-    <div class="hero-of-the-people-winner-votes">
+    <div class="gmants-hero-of-the-people-winner-votes">
       {{results.voteCount}} / {{results.totalVotes}}
-      <span class="hero-of-the-people-votes-label">{{localize "HERO_OF_THE_PEOPLE.Results.Votes"}}</span>
+      <span class="gmants-hero-of-the-people-votes-label">{{localize "HERO_OF_THE_PEOPLE.Results.Votes"}}</span>
     </div>
   </div>
 
   {{!-- Vote breakdown --}}
-  <div class="hero-of-the-people-section">
-    <div class="hero-of-the-people-section-header">
+  <div class="gmants-hero-of-the-people-section">
+    <div class="gmants-hero-of-the-people-section-header">
       <label>{{localize "HERO_OF_THE_PEOPLE.Results.Breakdown"}}</label>
     </div>
-    <div class="hero-of-the-people-breakdown-list">
+    <div class="gmants-hero-of-the-people-breakdown-list">
       {{#each results.breakdown}}
-      <div class="hero-of-the-people-breakdown-row">
-        <span class="hero-of-the-people-breakdown-voter">{{voterName}}</span>
-        <i class="fas fa-arrow-right hero-of-the-people-breakdown-arrow"></i>
-        <span class="hero-of-the-people-breakdown-target">{{targetName}}</span>
+      <div class="gmants-hero-of-the-people-breakdown-row">
+        <span class="gmants-hero-of-the-people-breakdown-voter">{{voterName}}</span>
+        <i class="fas fa-arrow-right gmants-hero-of-the-people-breakdown-arrow"></i>
+        <span class="gmants-hero-of-the-people-breakdown-target">{{targetName}}</span>
       </div>
       {{/each}}
     </div>
@@ -33,54 +33,54 @@
 
   {{!-- Hero Hype section (if any hype was submitted) --}}
   {{#if hasHype}}
-  <div class="hero-of-the-people-section">
-    <div class="hero-of-the-people-section-header">
+  <div class="gmants-hero-of-the-people-section">
+    <div class="gmants-hero-of-the-people-section-header">
       <label><i class="fas fa-fire"></i> {{localize "HERO_OF_THE_PEOPLE.Hype.Title"}}</label>
     </div>
-    <div class="hero-of-the-people-hype-list">
+    <div class="gmants-hero-of-the-people-hype-list">
       {{#each hypeEntries}}
-      <div class="hero-of-the-people-hype-entry">
-        <div class="hero-of-the-people-hype-entry-target">
+      <div class="gmants-hero-of-the-people-hype-entry">
+        <div class="gmants-hero-of-the-people-hype-entry-target">
           <strong>{{targetName}}</strong>
         </div>
         {{#if tags.length}}
-        <div class="hero-of-the-people-hype-entry-tags">
+        <div class="gmants-hero-of-the-people-hype-entry-tags">
           {{#each tags}}
-          <span class="hero-of-the-people-hype-badge"><i class="{{icon}}"></i> {{label}}</span>
+          <span class="gmants-hero-of-the-people-hype-badge"><i class="{{icon}}"></i> {{label}}</span>
           {{/each}}
         </div>
         {{/if}}
         {{#if message}}
-        <div class="hero-of-the-people-hype-entry-message">&ldquo;{{message}}&rdquo;</div>
+        <div class="gmants-hero-of-the-people-hype-entry-message">&ldquo;{{message}}&rdquo;</div>
         {{/if}}
       </div>
       {{/each}}
     </div>
-    <button type="button" class="hero-of-the-people-secondary-btn" data-action="postHype">
+    <button type="button" class="gmants-hero-of-the-people-secondary-btn" data-action="postHype">
       <i class="fas fa-bullhorn"></i> {{localize "HERO_OF_THE_PEOPLE.Hype.PostToChat"}}
     </button>
   </div>
   {{/if}}
 
   {{!-- Action buttons --}}
-  <div class="hero-of-the-people-action-buttons">
-    <button type="button" class="hero-of-the-people-primary-btn" data-action="accept">
+  <div class="gmants-hero-of-the-people-action-buttons">
+    <button type="button" class="gmants-hero-of-the-people-primary-btn" data-action="accept">
       <i class="fas fa-check"></i> {{localize "HERO_OF_THE_PEOPLE.Button.Accept"}}
     </button>
   </div>
 
   {{!-- Override section --}}
-  <div class="hero-of-the-people-section">
-    <div class="hero-of-the-people-section-header">
+  <div class="gmants-hero-of-the-people-section">
+    <div class="gmants-hero-of-the-people-section-header">
       <label>{{localize "HERO_OF_THE_PEOPLE.Button.Override"}}</label>
     </div>
-    <div class="hero-of-the-people-override-row">
-      <select class="hero-of-the-people-override-select">
+    <div class="gmants-hero-of-the-people-override-row">
+      <select class="gmants-hero-of-the-people-override-select">
         {{#each overrideCandidates}}
         <option value="{{actorId}}" {{#if isWinner}}selected{{/if}}>{{name}}</option>
         {{/each}}
       </select>
-      <button type="button" class="hero-of-the-people-secondary-btn" data-action="override">
+      <button type="button" class="gmants-hero-of-the-people-secondary-btn" data-action="override">
         <i class="fas fa-crown"></i> {{localize "HERO_OF_THE_PEOPLE.Button.Override"}}
       </button>
     </div>

@@ -1,18 +1,25 @@
 {
-  "id": "hero-of-the-people",
-  "title": "Hero of the People",
+  "id": "gmants-hero-of-the-people",
+  "title": "GMAnt's Hero of the People",
   "description": "A voting-based hero point and inspiration award system with timed GM reminders. Players vote for the hero of the day, and the winner receives a Hero Point (PF2e) or Inspiration (D&D 5e).",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "compatibility": {
     "minimum": "13",
-    "verified": "13",
-    "maximum": "13"
+    "verified": "13"
   },
   "authors": [
     {
-      "name": "GM Ant"
+      "name": "GM Ant",
+      "url": "https://roleplayr.com/gmant"
     }
   ],
+  "url": "https://github.com/AntTheGM/gmants-hero-of-the-people",
+  "bugs": "https://github.com/AntTheGM/gmants-hero-of-the-people/issues",
+  "license": "LICENSE",
+  "readme": "README.md",
+  "changelog": "https://github.com/AntTheGM/gmants-hero-of-the-people/releases",
+  "manifest": "https://github.com/AntTheGM/gmants-hero-of-the-people/releases/latest/download/module.json",
+  "download": "https://github.com/AntTheGM/gmants-hero-of-the-people/releases/download/v1.0.0/module.zip",
   "esmodules": ["scripts/main.js"],
   "styles": ["styles/module.css"],
   "languages": [
@@ -24,9 +31,9 @@
   ],
   "packs": [
     {
-      "name": "hero-of-the-people-macros",
-      "label": "Hero of the People Macros",
-      "path": "packs/hero-of-the-people-macros",
+      "name": "gmants-hero-of-the-people-macros",
+      "label": "GMAnt's Hero of the People Macros",
+      "path": "packs/gmants-hero-of-the-people-macros",
       "type": "Macro",
       "ownership": {
         "PLAYER": "OBSERVER",
@@ -36,9 +43,9 @@
   ],
   "packFolders": [
     {
-      "name": "Hero of the People",
+      "name": "GMAnt's Hero of the People",
       "sorting": "m",
-      "packs": ["hero-of-the-people-macros"]
+      "packs": ["gmants-hero-of-the-people-macros"]
     }
   ],
   "socket": true,

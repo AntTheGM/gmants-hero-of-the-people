@@ -192,11 +192,11 @@ export class VoteMonitorDialog extends HandlebarsApplicationMixin(ApplicationV2)
     if (this.#phase !== "monitoring" || !this.element) return;
 
     // Update count text
-    const countEl = this.element.querySelector(".hero-of-the-people-monitor-count");
+    const countEl = this.element.querySelector(".gmants-hero-of-the-people-monitor-count");
     if (countEl) countEl.textContent = `${this.#votedIds.size} / ${this.#expectedCount}`;
 
     // Update progress bar
-    const barEl = this.element.querySelector(".hero-of-the-people-monitor-bar-fill");
+    const barEl = this.element.querySelector(".gmants-hero-of-the-people-monitor-bar-fill");
     if (barEl) {
       const pct = this.#expectedCount > 0 ? (this.#votedIds.size / this.#expectedCount) * 100 : 0;
       barEl.style.width = `${pct}%`;
@@ -204,9 +204,9 @@ export class VoteMonitorDialog extends HandlebarsApplicationMixin(ApplicationV2)
 
     // Update voter status icons
     for (const uid of this.#votedIds) {
-      const row = this.element.querySelector(`.hero-of-the-people-voter-row[data-voter-id="${uid}"]`);
+      const row = this.element.querySelector(`.gmants-hero-of-the-people-voter-row[data-voter-id="${uid}"]`);
       if (row) {
-        const statusEl = row.querySelector(".hero-of-the-people-voter-status");
+        const statusEl = row.querySelector(".gmants-hero-of-the-people-voter-status");
         if (statusEl && !statusEl.classList.contains("voted")) {
           statusEl.classList.remove("waiting");
           statusEl.classList.add("voted");
@@ -224,12 +224,12 @@ export class VoteMonitorDialog extends HandlebarsApplicationMixin(ApplicationV2)
   /** Add a fire icon to a voter row to indicate they submitted hype. */
   #updateHypeIndicator(voterId) {
     if (this.#phase !== "monitoring" || !this.element) return;
-    const row = this.element.querySelector(`.hero-of-the-people-voter-row[data-voter-id="${voterId}"]`);
-    if (row && !row.querySelector(".hero-of-the-people-hype-icon")) {
+    const row = this.element.querySelector(`.gmants-hero-of-the-people-voter-row[data-voter-id="${voterId}"]`);
+    if (row && !row.querySelector(".gmants-hero-of-the-people-hype-icon")) {
       const icon = document.createElement("i");
-      icon.className = "fas fa-fire hero-of-the-people-hype-icon";
+      icon.className = "fas fa-fire gmants-hero-of-the-people-hype-icon";
       icon.title = game.i18n.localize("HERO_OF_THE_PEOPLE.Hype.Title");
-      const statusEl = row.querySelector(".hero-of-the-people-voter-status");
+      const statusEl = row.querySelector(".gmants-hero-of-the-people-voter-status");
       if (statusEl) row.insertBefore(icon, statusEl);
     }
   }
@@ -237,7 +237,7 @@ export class VoteMonitorDialog extends HandlebarsApplicationMixin(ApplicationV2)
   #startCountdown() {
     if (this.#secondsLeft == null) return;
     if (this.#countdownInterval) clearInterval(this.#countdownInterval);
-    const timerEl = this.element?.querySelector(".hero-of-the-people-monitor-timer");
+    const timerEl = this.element?.querySelector(".gmants-hero-of-the-people-monitor-timer");
     if (!timerEl) return;
 
     this.#countdownInterval = setInterval(() => {
@@ -267,7 +267,7 @@ export class VoteMonitorDialog extends HandlebarsApplicationMixin(ApplicationV2)
   }
 
   static #onOverride(event, target) {
-    const select = this.element.querySelector(".hero-of-the-people-override-select");
+    const select = this.element.querySelector(".gmants-hero-of-the-people-override-select");
     const overrideId = select?.value;
     if (overrideId) {
       this.#onAcceptCallback(overrideId);
@@ -288,7 +288,7 @@ export class VoteMonitorDialog extends HandlebarsApplicationMixin(ApplicationV2)
     }
     const overrideBtn = this.element.querySelector('[data-action="override"]');
     if (overrideBtn) overrideBtn.disabled = true;
-    const overrideSelect = this.element.querySelector(".hero-of-the-people-override-select");
+    const overrideSelect = this.element.querySelector(".gmants-hero-of-the-people-override-select");
     if (overrideSelect) overrideSelect.disabled = true;
 
     // Show the Done button
@@ -309,17 +309,17 @@ export class VoteMonitorDialog extends HandlebarsApplicationMixin(ApplicationV2)
       }).filter(Boolean);
 
       const tagsHtml = tagLabels.length > 0
-        ? `<div class="hero-of-the-people-chat-hype-tags">${tagLabels.join(" &middot; ")}</div>`
+        ? `<div class="gmants-hero-of-the-people-chat-hype-tags">${tagLabels.join(" &middot; ")}</div>`
         : "";
       const messageHtml = entry.message
-        ? `<div class="hero-of-the-people-chat-hype-message">&ldquo;${entry.message}&rdquo;</div>`
+        ? `<div class="gmants-hero-of-the-people-chat-hype-message">&ldquo;${entry.message}&rdquo;</div>`
         : "";
 
       if (!tagsHtml && !messageHtml) continue;
 
       const content = `
-        <div class="hero-of-the-people-chat-card">
-          <div class="hero-of-the-people-chat-header">
+        <div class="gmants-hero-of-the-people-chat-card">
+          <div class="gmants-hero-of-the-people-chat-header">
             <i class="fas fa-fire"></i>
             <strong>${game.i18n.format("HERO_OF_THE_PEOPLE.Hype.ChatHeader", { name: targetName })}</strong>
           </div>

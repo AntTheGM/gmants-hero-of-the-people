@@ -21,15 +21,15 @@ export async function postWinnerChat({ winnerId, winnerName, awardType }) {
   const announcement = game.i18n.format("HERO_OF_THE_PEOPLE.Chat.HeroAnnouncement", { name: winnerName });
 
   const content = `
-    <div class="hero-of-the-people-chat-card">
-      <div class="hero-of-the-people-chat-header">
+    <div class="gmants-hero-of-the-people-chat-card">
+      <div class="gmants-hero-of-the-people-chat-header">
         <i class="fas fa-medal"></i>
         <strong>${announcement}</strong>
       </div>
-      ${awardText ? `<div class="hero-of-the-people-chat-award">${awardText}</div>` : ""}
-      <div class="hero-of-the-people-chat-quote">
+      ${awardText ? `<div class="gmants-hero-of-the-people-chat-award">${awardText}</div>` : ""}
+      <div class="gmants-hero-of-the-people-chat-quote">
         <em>&ldquo;${quote.text}&rdquo;</em>
-        <span class="hero-of-the-people-chat-author">&mdash; ${quote.author}</span>
+        <span class="gmants-hero-of-the-people-chat-author">&mdash; ${quote.author}</span>
       </div>
     </div>
   `;

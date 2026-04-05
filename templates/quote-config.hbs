@@ -1,33 +1,33 @@
-<div class="hero-of-the-people-form hero-of-the-people-quote-config-form">
-  <p class="hero-of-the-people-quote-config-desc">
+<div class="gmants-hero-of-the-people-form gmants-hero-of-the-people-quote-config-form">
+  <p class="gmants-hero-of-the-people-quote-config-desc">
     {{localize "HERO_OF_THE_PEOPLE.Settings.QuoteConfigDesc"}}
   </p>
 
   {{!-- Quote list --}}
-  <div class="hero-of-the-people-quote-list">
+  <div class="gmants-hero-of-the-people-quote-list">
     {{#each quotes}}
-    <div class="hero-of-the-people-quote-row {{#if isDeleted}}hero-of-the-people-quote-deleted{{/if}}">
-      <div class="hero-of-the-people-quote-content">
-        <span class="hero-of-the-people-quote-text">&ldquo;{{text}}&rdquo;</span>
-        <span class="hero-of-the-people-quote-author">&mdash; {{author}}</span>
+    <div class="gmants-hero-of-the-people-quote-row {{#if isDeleted}}gmants-hero-of-the-people-quote-deleted{{/if}}">
+      <div class="gmants-hero-of-the-people-quote-content">
+        <span class="gmants-hero-of-the-people-quote-text">&ldquo;{{text}}&rdquo;</span>
+        <span class="gmants-hero-of-the-people-quote-author">&mdash; {{author}}</span>
       </div>
-      <div class="hero-of-the-people-quote-actions">
+      <div class="gmants-hero-of-the-people-quote-actions">
         {{#if isDefault}}
           {{#if isDeleted}}
-          <button type="button" class="hero-of-the-people-icon-btn" data-action="restoreQuote"
+          <button type="button" class="gmants-hero-of-the-people-icon-btn" data-action="restoreQuote"
             data-quote-text="{{text}}" data-quote-author="{{author}}"
             title="{{localize "HERO_OF_THE_PEOPLE.Settings.RestoreQuote"}}">
             <i class="fas fa-undo"></i>
           </button>
           {{else}}
-          <button type="button" class="hero-of-the-people-icon-btn" data-action="deleteQuote"
+          <button type="button" class="gmants-hero-of-the-people-icon-btn" data-action="deleteQuote"
             data-quote-text="{{text}}" data-quote-author="{{author}}"
             title="{{localize "HERO_OF_THE_PEOPLE.Settings.DeleteQuote"}}">
             <i class="fas fa-times"></i>
           </button>
           {{/if}}
         {{else}}
-        <button type="button" class="hero-of-the-people-icon-btn" data-action="removeQuote"
+        <button type="button" class="gmants-hero-of-the-people-icon-btn" data-action="removeQuote"
           data-quote-text="{{text}}" data-quote-author="{{author}}"
           title="{{localize "HERO_OF_THE_PEOPLE.Settings.RemoveQuote"}}">
           <i class="fas fa-trash"></i>
@@ -39,22 +39,22 @@
   </div>
 
   {{!-- Add new quote --}}
-  <div class="hero-of-the-people-section">
-    <div class="hero-of-the-people-section-header">
+  <div class="gmants-hero-of-the-people-section">
+    <div class="gmants-hero-of-the-people-section-header">
       <label>{{localize "HERO_OF_THE_PEOPLE.Settings.AddQuote"}}</label>
     </div>
-    <div class="hero-of-the-people-quote-add-form">
+    <div class="gmants-hero-of-the-people-quote-add-form">
       <input type="text" name="new-quote-text" placeholder="{{localize "HERO_OF_THE_PEOPLE.Settings.QuotePlaceholder"}}" />
       <input type="text" name="new-quote-author" placeholder="{{localize "HERO_OF_THE_PEOPLE.Settings.AuthorPlaceholder"}}" />
-      <button type="button" class="hero-of-the-people-secondary-btn" data-action="addQuote">
+      <button type="button" class="gmants-hero-of-the-people-secondary-btn" data-action="addQuote">
         <i class="fas fa-plus"></i> {{localize "HERO_OF_THE_PEOPLE.Settings.Add"}}
       </button>
     </div>
   </div>
 
   {{!-- Reset button --}}
-  <div class="hero-of-the-people-quote-config-footer">
-    <button type="button" class="hero-of-the-people-secondary-btn" data-action="resetAll">
+  <div class="gmants-hero-of-the-people-quote-config-footer">
+    <button type="button" class="gmants-hero-of-the-people-secondary-btn" data-action="resetAll">
       <i class="fas fa-undo"></i> {{localize "HERO_OF_THE_PEOPLE.Settings.ResetAll"}}
     </button>
   </div>

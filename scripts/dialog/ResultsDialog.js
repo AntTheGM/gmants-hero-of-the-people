@@ -98,7 +98,7 @@ export class ResultsDialog extends HandlebarsApplicationMixin(ApplicationV2) {
   }
 
   static #onOverride(event, target) {
-    const select = this.element.querySelector(".hero-of-the-people-override-select");
+    const select = this.element.querySelector(".gmants-hero-of-the-people-override-select");
     const overrideId = select?.value;
     if (overrideId) {
       this.#onAcceptCallback(overrideId);
@@ -120,17 +120,17 @@ export class ResultsDialog extends HandlebarsApplicationMixin(ApplicationV2) {
       }).filter(Boolean);
 
       const tagsHtml = tagLabels.length > 0
-        ? `<div class="hero-of-the-people-chat-hype-tags">${tagLabels.join(" &middot; ")}</div>`
+        ? `<div class="gmants-hero-of-the-people-chat-hype-tags">${tagLabels.join(" &middot; ")}</div>`
         : "";
       const messageHtml = entry.message
-        ? `<div class="hero-of-the-people-chat-hype-message">&ldquo;${entry.message}&rdquo;</div>`
+        ? `<div class="gmants-hero-of-the-people-chat-hype-message">&ldquo;${entry.message}&rdquo;</div>`
         : "";
 
       if (!tagsHtml && !messageHtml) continue;
 
       const content = `
-        <div class="hero-of-the-people-chat-card">
-          <div class="hero-of-the-people-chat-header">
+        <div class="gmants-hero-of-the-people-chat-card">
+          <div class="gmants-hero-of-the-people-chat-header">
             <i class="fas fa-fire"></i>
             <strong>${game.i18n.format("HERO_OF_THE_PEOPLE.Hype.ChatHeader", { name: targetName })}</strong>
           </div>
