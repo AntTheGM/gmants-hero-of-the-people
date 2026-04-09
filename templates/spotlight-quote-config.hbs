@@ -1,0 +1,59 @@
+<div class="gmants-hero-of-the-people-form gmants-hero-of-the-people-quote-config-form">
+  <p class="gmants-hero-of-the-people-quote-config-desc">
+    {{localize "HERO_OF_THE_PEOPLE.Settings.SpotlightQuoteConfigDesc"}}
+  </p>
+
+  {{!-- Quote list --}}
+  <div class="gmants-hero-of-the-people-quote-list">
+    {{#each quotes}}
+    <div class="gmants-hero-of-the-people-quote-row {{#if isDeleted}}gmants-hero-of-the-people-quote-deleted{{/if}}">
+      <div class="gmants-hero-of-the-people-quote-content">
+        <span class="gmants-hero-of-the-people-quote-text">&ldquo;{{text}}&rdquo;</span>
+      </div>
+      <div class="gmants-hero-of-the-people-quote-actions">
+        {{#if isDefault}}
+          {{#if isDeleted}}
+          <button type="button" class="gmants-hero-of-the-people-icon-btn" data-action="restoreQuote"
+            data-quote-text="{{text}}"
+            title="{{localize "HERO_OF_THE_PEOPLE.Settings.RestoreQuote"}}">
+            <i class="fas fa-undo"></i>
+          </button>
+          {{else}}
+          <button type="button" class="gmants-hero-of-the-people-icon-btn" data-action="deleteQuote"
+            data-quote-text="{{text}}"
+            title="{{localize "HERO_OF_THE_PEOPLE.Settings.DeleteQuote"}}">
+            <i class="fas fa-times"></i>
+          </button>
+          {{/if}}
+        {{else}}
+        <button type="button" class="gmants-hero-of-the-people-icon-btn" data-action="removeQuote"
+          data-quote-text="{{text}}"
+          title="{{localize "HERO_OF_THE_PEOPLE.Settings.RemoveQuote"}}">
+          <i class="fas fa-trash"></i>
+        </button>
+        {{/if}}
+      </div>
+    </div>
+    {{/each}}
+  </div>
+
+  {{!-- Add new quote --}}
+  <div class="gmants-hero-of-the-people-section">
+    <div class="gmants-hero-of-the-people-section-header">
+      <label>{{localize "HERO_OF_THE_PEOPLE.Settings.AddQuote"}}</label>
+    </div>
+    <div class="gmants-hero-of-the-people-quote-add-form">
+      <input type="text" name="new-quote-text" placeholder="{{localize "HERO_OF_THE_PEOPLE.Settings.SpotlightQuotePlaceholder"}}" />
+      <button type="button" class="gmants-hero-of-the-people-secondary-btn" data-action="addQuote">
+        <i class="fas fa-plus"></i> {{localize "HERO_OF_THE_PEOPLE.Settings.Add"}}
+      </button>
+    </div>
+  </div>
+
+  {{!-- Reset button --}}
+  <div class="gmants-hero-of-the-people-quote-config-footer">
+    <button type="button" class="gmants-hero-of-the-people-secondary-btn" data-action="resetAll">
+      <i class="fas fa-undo"></i> {{localize "HERO_OF_THE_PEOPLE.Settings.ResetAll"}}
+    </button>
+  </div>
+</div>

@@ -1174,6 +1174,31 @@ a.gmants-hero-of-the-people-branding:hover {
   z-index: 1;
 }
 
+/* GM override row (dropdown + label) */
+.gmants-hero-of-the-people-spotlight-gm-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0;
+}
+
+.gmants-hero-of-the-people-spotlight-override-label {
+  font-size: 0.8rem;
+  font-weight: bold;
+  white-space: nowrap;
+  opacity: 0.7;
+}
+
+.gmants-hero-of-the-people-spotlight-override-label i {
+  color: var(--gmants-hero-of-the-people-gold);
+  margin-right: 0.2rem;
+}
+
+.gmants-hero-of-the-people-spotlight-override-select {
+  flex: 1;
+  font-size: 0.8rem;
+}
+
 /* Active highlight during spin */
 .gmants-hero-of-the-people-spotlight-card.spotlight-active {
   border-color: var(--gmants-hero-of-the-people-gold);

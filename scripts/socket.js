@@ -78,6 +78,20 @@ export class HeroSocket {
     this.#emit(SOCKET_EVENTS.CLOSE_VOTING);
   }
 
+  /** Broadcast that the spotlight dialog should open on all players (GM → all). */
+  emitSpotlightOpen() {
+    this.#emit(SOCKET_EVENTS.SPOTLIGHT_OPEN);
+  }
+
+  /**
+   * Broadcast a spotlight spin to all players (GM → all).
+   * @param {object} options
+   * @param {string} options.winnerId - The pre-determined winner's actor ID
+   */
+  emitSpotlightSpin({ winnerId }) {
+    this.#emit(SOCKET_EVENTS.SPOTLIGHT_SPIN, { winnerId });
+  }
+
   /**
    * Send a hype submission to the GM (player → GM).
    * @param {object} hype

@@ -1,7 +1,17 @@
 import { MODULE_ID } from "./const.js";
 import { QuoteConfig } from "./settings/QuoteConfig.js";
+import { SpotlightQuoteConfig } from "./settings/SpotlightQuoteConfig.js";
 
 export function registerSettings() {
+  game.settings.registerMenu(MODULE_ID, "spotlightQuoteConfig", {
+    name: "HERO_OF_THE_PEOPLE.Settings.SpotlightQuoteConfig",
+    label: "HERO_OF_THE_PEOPLE.Settings.SpotlightQuoteConfigLabel",
+    hint: "HERO_OF_THE_PEOPLE.Settings.SpotlightQuoteConfigHint",
+    icon: "fas fa-star",
+    type: SpotlightQuoteConfig,
+    restricted: true,
+  });
+
   game.settings.registerMenu(MODULE_ID, "quoteConfig", {
     name: "HERO_OF_THE_PEOPLE.Settings.QuoteConfig",
     label: "HERO_OF_THE_PEOPLE.Settings.QuoteConfigLabel",
@@ -71,6 +81,22 @@ export function registerSettings() {
     config: true,
     type: Boolean,
     default: true,
+  });
+
+  game.settings.register(MODULE_ID, "enableSpotlight", {
+    name: "HERO_OF_THE_PEOPLE.Settings.EnableSpotlight",
+    hint: "HERO_OF_THE_PEOPLE.Settings.EnableSpotlightHint",
+    scope: "world",
+    config: true,
+    type: Boolean,
+    default: true,
+  });
+
+  game.settings.register(MODULE_ID, "spotlightQuoteOverrides", {
+    scope: "world",
+    config: false,
+    default: { added: [], deleted: [] },
+    type: Object,
   });
 
   game.settings.register(MODULE_ID, "excludedActors", {

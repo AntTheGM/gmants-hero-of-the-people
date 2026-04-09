@@ -102,7 +102,8 @@ export class ReminderDialog extends HandlebarsApplicationMixin(ApplicationV2) {
       context.systemLabel = "D&D 5e";
     }
     // Spotlight state
-    context.spotlightDismissed = game.settings.get(MODULE_ID, "spotlightDismissed");
+    context.spotlightEnabled = game.settings.get(MODULE_ID, "enableSpotlight");
+    context.spotlightDismissed = !context.spotlightEnabled || game.settings.get(MODULE_ID, "spotlightDismissed");
     return context;
   }
 

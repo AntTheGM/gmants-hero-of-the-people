@@ -32,8 +32,23 @@
     <div class="gmants-hero-of-the-people-spotlight-winner-phrase"></div>
   </div>
 
-  {{!-- Spin button --}}
+  {{!-- GM controls (hidden for viewers) --}}
+  {{#unless isViewer}}
+  <div class="gmants-hero-of-the-people-spotlight-gm-row">
+    <label class="gmants-hero-of-the-people-spotlight-override-label">
+      <i class="fas fa-crosshairs"></i> {{localize "HERO_OF_THE_PEOPLE.Spotlight.OverrideLabel"}}
+    </label>
+    <select class="gmants-hero-of-the-people-spotlight-override-select" name="spotlight-override">
+      <option value="random">{{localize "HERO_OF_THE_PEOPLE.Button.Random"}}</option>
+      {{#each candidates}}
+      {{#unless maxed}}
+      <option value="{{actorId}}">{{characterName}}</option>
+      {{/unless}}
+      {{/each}}
+    </select>
+  </div>
   <button type="button" class="gmants-hero-of-the-people-primary-btn" data-action="spin">
     <i class="fas fa-star"></i> {{localize "HERO_OF_THE_PEOPLE.Spotlight.Spin"}}
   </button>
+  {{/unless}}
 </div>

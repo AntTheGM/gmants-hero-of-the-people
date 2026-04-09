@@ -345,7 +345,14 @@ async function finalizeWinner(actorId) {
 // ==================== SPOTLIGHT ROULETTE ====================
 
 function openSpotlightDialog() {
+  // Tell all players to open their viewer dialogs now
+  heroSocket.emitSpotlightOpen();
+
   new SpotlightDialog({
+    onSpin: (winnerId) => {
+      // Broadcast winner to all players so they start the same spin
+      heroSocket.emitSpotlightSpin({ winnerId });
+    },
     onWinner: async (actorId) => {
       const actor = game.actors.get(actorId);
       const winnerName = actor?.name ?? "Unknown";
@@ -365,6 +372,21 @@ function openSpotlightDialog() {
 function setupPlayer() {
   heroSocket.on(SOCKET_EVENTS.INITIATE_VOTE, (payload) => {
     openVotingDialog(payload);
+  });
+
+  /** @type {SpotlightDialog|null} Active viewer spotlight dialog */
+  let activeSpotlightViewer = null;
+
+  heroSocket.on(SOCKET_EVENTS.SPOTLIGHT_OPEN, () => {
+    activeSpotlightViewer = new SpotlightDialog({ isViewer: true });
+    activeSpotlightViewer.render(true);
+  });
+
+  heroSocket.on(SOCKET_EVENTS.SPOTLIGHT_SPIN, (payload) => {
+    if (activeSpotlightViewer) {
+      activeSpotlightViewer.startSpin(payload.winnerId);
+      activeSpotlightViewer = null;
+    }
   });
 
   heroSocket.on(SOCKET_EVENTS.VOTE_RESULTS, () => {

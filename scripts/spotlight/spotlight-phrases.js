@@ -1,24 +1,39 @@
+const MODULE_ID_LOCAL = "gmants-hero-of-the-people";
+
 /**
- * Fun announcement phrases for the Spotlight Roulette.
+ * Default spotlight roulette quotes.
  * {name} is replaced with the winner's character name.
  */
-export const SPOTLIGHT_PHRASES = [
+export const DEFAULT_SPOTLIGHT_QUOTES = [
   "{name} is going to be EPIC this game!",
   "Time for {name} to shine!",
-  "{name} is the Hero of the People!",
-  "All eyes on {name} — legend in the making!",
   "The spotlight chooses {name}!",
-  "{name} has been chosen by fate!",
   "Tonight belongs to {name}!",
-  "{name} is about to do something incredible!",
-  "Brace yourselves — {name} is feeling heroic!",
   "The stars align for {name}!",
-  "{name} steps into the spotlight!",
-  "May the dice favor {name} today!",
-  "{name} — born to be a hero!",
-  "This is {name}'s moment of glory!",
-  "Get ready, {name} is on fire!",
 ];
+
+/**
+ * Get all spotlight quotes, merging defaults with user overrides.
+ * @returns {{ text: string, isDefault: boolean, isDeleted: boolean }[]}
+ */
+export function getAllSpotlightQuotes() {
+  const overrides = game.settings.get(MODULE_ID_LOCAL, "spotlightQuoteOverrides");
+  const deletedSet = new Set(overrides.deleted ?? []);
+
+  const defaults = DEFAULT_SPOTLIGHT_QUOTES.map((text) => ({
+    text,
+    isDefault: true,
+    isDeleted: deletedSet.has(text),
+  }));
+
+  const added = (overrides.added ?? []).map((text) => ({
+    text,
+    isDefault: false,
+    isDeleted: false,
+  }));
+
+  return [...defaults, ...added];
+}
 
 /**
  * Get a random spotlight phrase with the winner's name inserted.
@@ -26,8 +41,10 @@ export const SPOTLIGHT_PHRASES = [
  * @returns {string}
  */
 export function getRandomPhrase(name) {
-  const phrase = SPOTLIGHT_PHRASES[Math.floor(Math.random() * SPOTLIGHT_PHRASES.length)];
-  return phrase.replace("{name}", name);
+  const active = getAllSpotlightQuotes().filter((q) => !q.isDeleted);
+  const pool = active.length > 0 ? active : DEFAULT_SPOTLIGHT_QUOTES.map((text) => ({ text }));
+  const chosen = pool[Math.floor(Math.random() * pool.length)];
+  return chosen.text.replace("{name}", name);
 }
 
 /**
@@ -43,19 +60,21 @@ export async function postSpotlightChat({ winnerId, winnerName, awardType }) {
 
   let awardText = "";
   if (awardType === "heroPoint") {
-    awardText = game.i18n.format("HERO_OF_THE_PEOPLE.Chat.HeroPointAwarded", { name: winnerName });
+    awardText = game.i18n.format("HERO_OF_THE_PEOPLE.Spotlight.AwardedHeroPoint", { name: winnerName });
   } else if (awardType === "inspiration") {
-    awardText = game.i18n.format("HERO_OF_THE_PEOPLE.Chat.InspirationAwarded", { name: winnerName });
+    awardText = game.i18n.format("HERO_OF_THE_PEOPLE.Spotlight.AwardedInspiration", { name: winnerName });
   }
 
   const actor = game.actors.get(winnerId);
   const img = actor?.img ?? "icons/svg/mystery-man.svg";
 
+  const announcement = game.i18n.format("HERO_OF_THE_PEOPLE.Chat.HeroAnnouncement", { name: winnerName });
+
   const content = `
     <div class="gmants-hero-of-the-people-chat-card gmants-hero-of-the-people-spotlight-chat">
       <div class="gmants-hero-of-the-people-chat-header">
         <i class="fas fa-star"></i>
-        <strong>${game.i18n.localize("HERO_OF_THE_PEOPLE.Spotlight.ChatHeader")}</strong>
+        <strong>${announcement}</strong>
       </div>
       <div class="gmants-hero-of-the-people-spotlight-chat-body">
         <img src="${img}" alt="${winnerName}" class="gmants-hero-of-the-people-spotlight-chat-portrait" />

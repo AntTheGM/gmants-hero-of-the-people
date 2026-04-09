@@ -30,8 +30,11 @@ export class SpotlightDialog extends HandlebarsApplicationMixin(ApplicationV2) {
     },
   };
 
-  /** @type {Function} Called with (actorId) when the spin completes */
+  /** @type {Function|null} Called with (actorId) when the GM awards the winner */
   #onWinner;
+
+  /** @type {Function|null} Called with (winnerId) when the GM starts the spin (to broadcast) */
+  #onSpinCallback;
 
   /** @type {boolean} Whether the spin is in progress or complete */
   #spinning = false;
@@ -42,13 +45,20 @@ export class SpotlightDialog extends HandlebarsApplicationMixin(ApplicationV2) {
   /** @type {object[]} Cached candidate list */
   #candidates = [];
 
+  /** @type {boolean} Viewer mode — no spin button, waits for startSpin() */
+  #isViewer = false;
+
   /**
    * @param {object} options
-   * @param {Function} options.onWinner - Called with the winning actor's ID
+   * @param {Function} [options.onWinner] - Called with the winning actor's ID (GM only)
+   * @param {Function} [options.onSpin] - Called with winnerId when GM starts spin (to broadcast)
+   * @param {boolean} [options.isViewer] - Viewer mode (no spin button, waits for startSpin call)
    */
-  constructor({ onWinner } = {}) {
+  constructor({ onWinner, onSpin, isViewer } = {}) {
     super();
-    this.#onWinner = onWinner;
+    this.#onWinner = onWinner || null;
+    this.#onSpinCallback = onSpin || null;
+    this.#isViewer = !!isViewer;
   }
 
   async _prepareContext(options) {
@@ -64,6 +74,7 @@ export class SpotlightDialog extends HandlebarsApplicationMixin(ApplicationV2) {
         maxed: isAtMax(a),
       }));
     context.candidates = this.#candidates;
+    context.isViewer = this.#isViewer;
     return context;
   }
 
@@ -74,35 +85,65 @@ export class SpotlightDialog extends HandlebarsApplicationMixin(ApplicationV2) {
   }
 
   /**
-   * Run the roulette spin animation.
-   * Cycles through portraits with decelerating speed, then reveals the winner.
+   * Public method to start the spin from outside (used by socket handler).
+   * @param {string} winnerId - The actor ID the spin will land on
+   */
+  startSpin(winnerId) {
+    this.#runSpin(winnerId);
+  }
+
+  /**
+   * GM clicks the spin button.
    */
   static #onSpin(event, target) {
-    if (this.#spinning || this.#done) return;
-    if (this.#candidates.length === 0) {
-      ui.notifications.warn(game.i18n.localize("HERO_OF_THE_PEOPLE.Status.NoEligible"));
-      return;
-    }
+    if (this.#spinning || this.#done || this.#isViewer) return;
 
-    // Filter eligible candidates (not at max / not already inspired)
+    // Filter eligible candidates
     const eligible = this.#candidates.filter((c) => !c.maxed);
     if (eligible.length === 0) {
       ui.notifications.warn(game.i18n.localize("HERO_OF_THE_PEOPLE.Status.NoEligible"));
       return;
     }
 
+    // Check the GM override dropdown
+    const overrideSelect = this.element.querySelector('select[name="spotlight-override"]');
+    const overrideValue = overrideSelect?.value ?? "random";
+
+    let winner;
+    if (overrideValue !== "random") {
+      winner = this.#candidates.find((c) => c.actorId === overrideValue);
+    }
+    if (!winner) {
+      winner = eligible[Math.floor(Math.random() * eligible.length)];
+    }
+
+    // Broadcast to players before starting local animation
+    if (this.#onSpinCallback) this.#onSpinCallback(winner.actorId);
+
+    this.#runSpin(winner.actorId);
+  }
+
+  /**
+   * Run the roulette spin animation for a given winner.
+   * Used by both GM (after clicking spin) and viewers (auto-started).
+   * @param {string} winnerId - The actor ID that the spin will land on
+   */
+  #runSpin(winnerId) {
+    if (this.#spinning || this.#done) return;
+    if (this.#candidates.length === 0) return;
+
+    const winnerIdx = this.#candidates.findIndex((c) => c.actorId === winnerId);
+    if (winnerIdx === -1) return;
+    const winner = this.#candidates[winnerIdx];
+
     this.#spinning = true;
 
-    // Disable the spin button
+    // Disable/update the spin button (may not exist in viewer mode)
     const btn = this.element.querySelector('[data-action="spin"]');
     if (btn) {
       btn.disabled = true;
       btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${game.i18n.localize("HERO_OF_THE_PEOPLE.Spotlight.Spinning")}`;
     }
-
-    // Pick the winner randomly from eligible candidates
-    const winner = eligible[Math.floor(Math.random() * eligible.length)];
-    const winnerIdx = this.#candidates.indexOf(winner);
 
     const cards = this.element.querySelectorAll(".gmants-hero-of-the-people-spotlight-card");
     if (cards.length === 0) return;
@@ -136,7 +177,6 @@ export class SpotlightDialog extends HandlebarsApplicationMixin(ApplicationV2) {
 
       // Ease-out deceleration: speed slows as we approach the end
       const progress = step / totalCycles;
-      // Use cubic easing for a natural "wheel of fortune" slowdown
       const eased = progress * progress * progress;
       const interval = baseInterval + (maxInterval - baseInterval) * eased;
 
@@ -184,18 +224,22 @@ export class SpotlightDialog extends HandlebarsApplicationMixin(ApplicationV2) {
           requestAnimationFrame(() => reveal.classList.add("spotlight-reveal-active"));
         }
 
-        // Change button to "Award" / close
-        if (btn) {
-          btn.disabled = false;
-          btn.innerHTML = `<i class="fas fa-trophy"></i> ${game.i18n.localize("HERO_OF_THE_PEOPLE.Spotlight.Award")}`;
-          btn.dataset.action = "award";
+        if (this.#isViewer) {
+          // Viewers: hide button, auto-close after a delay
+          if (btn) btn.style.display = "none";
+          setTimeout(() => this.close(), 5000);
+        } else {
+          // GM: show the "Award & Close" button
+          if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = `<i class="fas fa-trophy"></i> ${game.i18n.localize("HERO_OF_THE_PEOPLE.Spotlight.Award")}`;
+            btn.dataset.action = "award";
+          }
+          btn?.addEventListener("click", () => {
+            if (this.#onWinner) this.#onWinner(winner.actorId);
+            this.close();
+          }, { once: true });
         }
-
-        // Rebind the button for the award action
-        btn?.addEventListener("click", () => {
-          if (this.#onWinner) this.#onWinner(winner.actorId);
-          this.close();
-        }, { once: true });
       }, 400);
     }, 800);
   }

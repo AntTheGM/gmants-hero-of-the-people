@@ -8,4 +8,6 @@ export const SOCKET_EVENTS = {
   VOTE_RESULTS: "voteResults",
   CLOSE_VOTING: "closeVoting",
   SUBMIT_HYPE: "submitHype",
+  SPOTLIGHT_OPEN: "spotlightOpen",
+  SPOTLIGHT_SPIN: "spotlightSpin",
 };
