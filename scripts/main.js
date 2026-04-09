@@ -79,8 +79,12 @@ Hooks.once("ready", async () => {
   });
 
   if (game.user.isGM) {
-    // Post startup chat (visible to everyone)
-    postStartupChat();
+    // Post startup chat only on new session (not F5 refresh)
+    const navEntry = performance.getEntriesByType("navigation")[0];
+    const isNewSession = (navEntry?.type ?? "navigate") !== "reload";
+    if (isNewSession) {
+      postStartupChat();
+    }
 
     setupGM();
   } else {
