@@ -14,16 +14,21 @@ export class HeroOfThePeopleAPI {
   /** @type {Function} Opens the hype dialog for players (or GM reminder for GM) */
   #openHypeDialogFn;
 
+  /** @type {Function} Opens the Spotlight Roulette dialog */
+  #openSpotlightFn;
+
   /**
    * @param {object} callbacks
    * @param {Function} callbacks.initiateVote - Triggers the full vote flow
    * @param {Function} callbacks.openReminder - Opens the GM reminder dialog
    * @param {Function} callbacks.openHypeDialog - Opens the hype-only dialog for players
+   * @param {Function} callbacks.openSpotlight - Opens the Spotlight Roulette dialog
    */
-  constructor({ initiateVote, openReminder, openHypeDialog }) {
+  constructor({ initiateVote, openReminder, openHypeDialog, openSpotlight }) {
     this.#initiateVoteFn = initiateVote;
     this.#openReminderFn = openReminder;
     this.#openHypeDialogFn = openHypeDialog;
+    this.#openSpotlightFn = openSpotlight;
   }
 
   /** Record that a vote just completed (persists across reloads). */
@@ -59,6 +64,18 @@ export class HeroOfThePeopleAPI {
       return;
     }
     this.#initiateVoteFn();
+  }
+
+  /**
+   * Open the Spotlight Roulette — spins through portraits and randomly awards inspiration.
+   * Only works for the GM.
+   */
+  spotlight() {
+    if (!game.user.isGM) {
+      ui.notifications.warn(game.i18n.localize("HERO_OF_THE_PEOPLE.Status.GMOnly"));
+      return;
+    }
+    this.#openSpotlightFn();
   }
 
   /**

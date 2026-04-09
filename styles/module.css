@@ -985,3 +985,199 @@ a.gmants-hero-of-the-people-branding:hover {
   opacity: 0.6;
   font-style: italic;
 }
+
+/* ============================================
+   Spotlight Roulette
+   ============================================ */
+
+.gmants-hero-of-the-people-spotlight-instruction {
+  text-align: center;
+  font-size: 1rem;
+  font-style: italic;
+  opacity: 0.8;
+  padding: 0.25rem 0;
+  transition: opacity 0.4s;
+}
+
+/* --- Carousel Stage --- */
+.gmants-hero-of-the-people-spotlight-stage {
+  overflow: hidden;
+  border: 1px solid var(--gmants-hero-of-the-people-border);
+  border-radius: 6px;
+  background: var(--gmants-hero-of-the-people-bg-inset);
+  padding: 0.75rem 0.5rem;
+  transition: opacity 0.4s;
+}
+
+.gmants-hero-of-the-people-spotlight-track {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* --- Portrait Cards --- */
+.gmants-hero-of-the-people-spotlight-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.4rem;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  transition: border-color 0.1s, box-shadow 0.1s, transform 0.1s, background 0.1s;
+  min-width: 72px;
+}
+
+.gmants-hero-of-the-people-spotlight-portrait {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--gmants-hero-of-the-people-border);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.gmants-hero-of-the-people-spotlight-name {
+  font-size: 0.7rem;
+  font-weight: bold;
+  text-align: center;
+  max-width: 72px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Active highlight during spin */
+.gmants-hero-of-the-people-spotlight-card.spotlight-active {
+  border-color: var(--gmants-hero-of-the-people-gold);
+  background: rgba(184, 134, 11, 0.12);
+  transform: scale(1.08);
+}
+
+.gmants-hero-of-the-people-spotlight-card.spotlight-active .gmants-hero-of-the-people-spotlight-portrait {
+  border-color: var(--gmants-hero-of-the-people-gold);
+  box-shadow: 0 0 12px rgba(184, 134, 11, 0.5);
+}
+
+/* Passing flash (previous card fading) */
+.gmants-hero-of-the-people-spotlight-card.spotlight-passing {
+  border-color: rgba(184, 134, 11, 0.25);
+  background: rgba(184, 134, 11, 0.04);
+}
+
+/* --- Winner Glow Animation --- */
+@keyframes gmants-hero-of-the-people-winner-glow {
+  0% { box-shadow: 0 0 8px rgba(184, 134, 11, 0.4); }
+  50% { box-shadow: 0 0 24px rgba(184, 134, 11, 0.8), 0 0 48px rgba(218, 165, 32, 0.4); }
+  100% { box-shadow: 0 0 8px rgba(184, 134, 11, 0.4); }
+}
+
+@keyframes gmants-hero-of-the-people-winner-pulse {
+  0% { transform: scale(1.08); }
+  50% { transform: scale(1.15); }
+  100% { transform: scale(1.08); }
+}
+
+.gmants-hero-of-the-people-spotlight-card.spotlight-winner {
+  border-color: var(--gmants-hero-of-the-people-gold-light);
+  background: rgba(184, 134, 11, 0.15);
+  animation:
+    gmants-hero-of-the-people-winner-pulse 0.6s ease-in-out 3,
+    gmants-hero-of-the-people-winner-glow 1.2s ease-in-out infinite;
+}
+
+.gmants-hero-of-the-people-spotlight-card.spotlight-winner .gmants-hero-of-the-people-spotlight-portrait {
+  border-color: var(--gmants-hero-of-the-people-gold-light);
+  box-shadow: 0 0 20px rgba(184, 134, 11, 0.7);
+}
+
+/* --- Fade Out Transition --- */
+.spotlight-fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* --- Winner Reveal Area --- */
+.gmants-hero-of-the-people-spotlight-reveal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 0;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.gmants-hero-of-the-people-spotlight-reveal.spotlight-reveal-active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* --- Winner Portrait Frame --- */
+@keyframes gmants-hero-of-the-people-reveal-glow {
+  0% { box-shadow: 0 0 15px rgba(184, 134, 11, 0.4), 0 0 30px rgba(184, 134, 11, 0.2); }
+  50% { box-shadow: 0 0 25px rgba(184, 134, 11, 0.7), 0 0 50px rgba(218, 165, 32, 0.35), 0 0 80px rgba(184, 134, 11, 0.15); }
+  100% { box-shadow: 0 0 15px rgba(184, 134, 11, 0.4), 0 0 30px rgba(184, 134, 11, 0.2); }
+}
+
+.gmants-hero-of-the-people-spotlight-winner-frame {
+  position: relative;
+  border-radius: 50%;
+  padding: 4px;
+  background: linear-gradient(135deg, var(--gmants-hero-of-the-people-gold), var(--gmants-hero-of-the-people-gold-light), var(--gmants-hero-of-the-people-gold));
+  animation: gmants-hero-of-the-people-reveal-glow 2s ease-in-out infinite;
+}
+
+.gmants-hero-of-the-people-spotlight-winner-portrait {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  border: 2px solid rgba(0, 0, 0, 0.3);
+}
+
+.gmants-hero-of-the-people-spotlight-winner-name {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: var(--gmants-hero-of-the-people-gold);
+  text-align: center;
+}
+
+.gmants-hero-of-the-people-spotlight-winner-phrase {
+  font-size: 0.95rem;
+  font-style: italic;
+  text-align: center;
+  opacity: 0.85;
+  max-width: 380px;
+}
+
+/* --- Spotlight Chat Card --- */
+.gmants-hero-of-the-people-spotlight-chat-body {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.35rem 0;
+}
+
+.gmants-hero-of-the-people-spotlight-chat-portrait {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--gmants-hero-of-the-people-gold);
+  box-shadow: 0 0 8px rgba(184, 134, 11, 0.3);
+}
+
+.gmants-hero-of-the-people-spotlight-chat-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.gmants-hero-of-the-people-spotlight-chat-phrase {
+  font-size: 0.95rem;
+  font-weight: bold;
+}

@@ -1,0 +1,32 @@
+<div class="gmants-hero-of-the-people-form gmants-hero-of-the-people-spotlight-form">
+  {{!-- Instruction text --}}
+  <div class="gmants-hero-of-the-people-spotlight-instruction">
+    {{localize "HERO_OF_THE_PEOPLE.Spotlight.Instruction"}}
+  </div>
+
+  {{!-- Portrait carousel --}}
+  <div class="gmants-hero-of-the-people-spotlight-stage">
+    <div class="gmants-hero-of-the-people-spotlight-track">
+      {{#each candidates}}
+      <div class="gmants-hero-of-the-people-spotlight-card" data-actor-id="{{actorId}}">
+        <img src="{{img}}" alt="{{characterName}}" class="gmants-hero-of-the-people-spotlight-portrait" />
+        <div class="gmants-hero-of-the-people-spotlight-name">{{characterName}}</div>
+      </div>
+      {{/each}}
+    </div>
+  </div>
+
+  {{!-- Winner reveal area (hidden until spin completes) --}}
+  <div class="gmants-hero-of-the-people-spotlight-reveal" style="display: none;">
+    <div class="gmants-hero-of-the-people-spotlight-winner-frame">
+      <img src="" alt="" class="gmants-hero-of-the-people-spotlight-winner-portrait" />
+    </div>
+    <div class="gmants-hero-of-the-people-spotlight-winner-name"></div>
+    <div class="gmants-hero-of-the-people-spotlight-winner-phrase"></div>
+  </div>
+
+  {{!-- Spin button --}}
+  <button type="button" class="gmants-hero-of-the-people-primary-btn" data-action="spin">
+    <i class="fas fa-star"></i> {{localize "HERO_OF_THE_PEOPLE.Spotlight.Spin"}}
+  </button>
+</div>

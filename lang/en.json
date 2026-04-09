@@ -102,5 +102,11 @@
   "HERO_OF_THE_PEOPLE.Reroll.Error": "Could not find PF2e reroll handler. Is the PF2e system active?",
   "HERO_OF_THE_PEOPLE.Settings.EnableRerollButton": "Hero Point Reroll Button",
   "HERO_OF_THE_PEOPLE.Settings.EnableRerollButtonHint": "Show a reroll button on d20 check chat cards for spending Hero Points. PF2e only.",
+  "HERO_OF_THE_PEOPLE.Spotlight.Title": "Spotlight Roulette",
+  "HERO_OF_THE_PEOPLE.Spotlight.Instruction": "Who will fate choose to be today's hero?",
+  "HERO_OF_THE_PEOPLE.Spotlight.Spin": "Spin the Spotlight!",
+  "HERO_OF_THE_PEOPLE.Spotlight.Spinning": "Spinning...",
+  "HERO_OF_THE_PEOPLE.Spotlight.Award": "Award & Close",
+  "HERO_OF_THE_PEOPLE.Spotlight.ChatHeader": "Spotlight Roulette!",
   "HERO_OF_THE_PEOPLE.Error.InitiateVote": "Hero of the People: Error initiating vote. Check console (F12)."
 }

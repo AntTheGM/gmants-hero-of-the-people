@@ -13,6 +13,8 @@ import { postWinnerChat } from "./chat/winner-message.js";
 import { HeroOfThePeopleAPI } from "./api.js";
 import { getPlayerCharacter, getEligibleActors } from "./utils.js";
 import { onRenderChatMessage as injectRerollButton } from "./reroll/reroll-button.js";
+import { SpotlightDialog } from "./spotlight/SpotlightDialog.js";
+import { postSpotlightChat } from "./spotlight/spotlight-phrases.js";
 
 /** @type {HeroSocket} */
 let heroSocket;
@@ -63,6 +65,7 @@ Hooks.once("ready", async () => {
     initiateVote,
     openReminder: openReminderDialog,
     openHypeDialog: openHypeDialog,
+    openSpotlight: openSpotlightDialog,
   });
 
   if (game.user.isGM) {
@@ -326,6 +329,21 @@ async function finalizeWinner(actorId) {
 
   // Clear collected hype
   collectedHype = [];
+}
+
+// ==================== SPOTLIGHT ROULETTE ====================
+
+function openSpotlightDialog() {
+  new SpotlightDialog({
+    onWinner: async (actorId) => {
+      const actor = game.actors.get(actorId);
+      const winnerName = actor?.name ?? "Unknown";
+
+      const awardType = await awardHeroPoint(actorId);
+      await trackSessionWinner(actorId);
+      await postSpotlightChat({ winnerId: actorId, winnerName, awardType });
+    },
+  }).render(true);
 }
 
 // ==================== PLAYER SETUP ====================
