@@ -15,6 +15,7 @@ import { getPlayerCharacter, getEligibleActors } from "./utils.js";
 import { onRenderChatMessage as injectRerollButton } from "./reroll/reroll-button.js";
 import { SpotlightDialog } from "./spotlight/SpotlightDialog.js";
 import { postSpotlightChat } from "./spotlight/spotlight-phrases.js";
+import { playTokenBurst } from "./spotlight/token-burst.js";
 
 /** @type {HeroSocket} */
 let heroSocket;
@@ -344,6 +345,9 @@ function openSpotlightDialog() {
       const awardType = await awardHeroPoint(actorId);
       await trackSessionWinner(actorId);
       await postSpotlightChat({ winnerId: actorId, winnerName, awardType });
+
+      // Play golden star-burst on the winner's token (no-op if not on scene)
+      playTokenBurst(actorId);
     },
   }).render(true);
 }

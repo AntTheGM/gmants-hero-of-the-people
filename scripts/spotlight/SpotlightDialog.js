@@ -1,5 +1,5 @@
 import { MODULE_ID } from "../const.js";
-import { getPlayerCharacterActors, getOwnerName } from "../utils.js";
+import { getPlayerCharacterActors, getOwnerName, isAtMax } from "../utils.js";
 import { getExcludedActorNames } from "../settings.js";
 import { getRandomPhrase } from "./spotlight-phrases.js";
 
@@ -61,6 +61,7 @@ export class SpotlightDialog extends HandlebarsApplicationMixin(ApplicationV2) {
         characterName: a.name,
         playerName: getOwnerName(a),
         img: a.img,
+        maxed: isAtMax(a),
       }));
     context.candidates = this.#candidates;
     return context;
@@ -83,6 +84,13 @@ export class SpotlightDialog extends HandlebarsApplicationMixin(ApplicationV2) {
       return;
     }
 
+    // Filter eligible candidates (not at max / not already inspired)
+    const eligible = this.#candidates.filter((c) => !c.maxed);
+    if (eligible.length === 0) {
+      ui.notifications.warn(game.i18n.localize("HERO_OF_THE_PEOPLE.Status.NoEligible"));
+      return;
+    }
+
     this.#spinning = true;
 
     // Disable the spin button
@@ -92,9 +100,9 @@ export class SpotlightDialog extends HandlebarsApplicationMixin(ApplicationV2) {
       btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${game.i18n.localize("HERO_OF_THE_PEOPLE.Spotlight.Spinning")}`;
     }
 
-    // Pick the winner randomly ahead of time
-    const winnerIdx = Math.floor(Math.random() * this.#candidates.length);
-    const winner = this.#candidates[winnerIdx];
+    // Pick the winner randomly from eligible candidates
+    const winner = eligible[Math.floor(Math.random() * eligible.length)];
+    const winnerIdx = this.#candidates.indexOf(winner);
 
     const cards = this.element.querySelectorAll(".gmants-hero-of-the-people-spotlight-card");
     if (cards.length === 0) return;

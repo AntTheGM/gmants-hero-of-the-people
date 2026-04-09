@@ -8,8 +8,15 @@
   <div class="gmants-hero-of-the-people-spotlight-stage">
     <div class="gmants-hero-of-the-people-spotlight-track">
       {{#each candidates}}
-      <div class="gmants-hero-of-the-people-spotlight-card" data-actor-id="{{actorId}}">
-        <img src="{{img}}" alt="{{characterName}}" class="gmants-hero-of-the-people-spotlight-portrait" />
+      <div class="gmants-hero-of-the-people-spotlight-card{{#if maxed}} spotlight-maxed{{/if}}" data-actor-id="{{actorId}}">
+        <div class="gmants-hero-of-the-people-spotlight-portrait-wrap">
+          <img src="{{img}}" alt="{{characterName}}" class="gmants-hero-of-the-people-spotlight-portrait" />
+          {{#if maxed}}
+          <div class="gmants-hero-of-the-people-spotlight-maxed-badge" title="{{localize "HERO_OF_THE_PEOPLE.Status.AtMax"}}">
+            <i class="fas fa-crown"></i>
+          </div>
+          {{/if}}
+        </div>
         <div class="gmants-hero-of-the-people-spotlight-name">{{characterName}}</div>
       </div>
       {{/each}}
