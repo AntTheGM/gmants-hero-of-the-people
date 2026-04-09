@@ -48,14 +48,22 @@ Hooks.once("init", () => {
 Hooks.once("ready", async () => {
   console.log(`${MODULE_ID} | Ready`);
 
-  // On first GM login, set session start time and reset winners
+  // Detect new session vs F5 refresh using the browser's Navigation API.
+  // "navigate" = GM clicked "Launch World" from setup (new session).
+  // "reload"   = GM pressed F5 (same session, skip reset).
   if (game.user.isGM) {
-    const existingStart = game.settings.get(MODULE_ID, "sessionStartTime");
-    if (!existingStart) {
+    const navEntry = performance.getEntriesByType("navigation")[0];
+    const navType = navEntry?.type ?? "navigate";
+    const isReload = navType === "reload";
+
+    if (!isReload) {
       await game.settings.set(MODULE_ID, "sessionStartTime", Date.now());
       await game.settings.set(MODULE_ID, "sessionWinners", []);
       await game.settings.set(MODULE_ID, "lastVoteTime", 0);
       await game.settings.set(MODULE_ID, "spotlightDismissed", false);
+      console.log(`${MODULE_ID} | New session started (navType: ${navType})`);
+    } else {
+      console.log(`${MODULE_ID} | Existing session resumed (navType: ${navType})`);
     }
   }
 
