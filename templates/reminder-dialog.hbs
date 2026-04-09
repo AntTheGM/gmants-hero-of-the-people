@@ -1,4 +1,5 @@
 <div class="gmants-hero-of-the-people-form">
+  {{!-- Elapsed time info --}}
   {{#if elapsed}}
   <div class="gmants-hero-of-the-people-elapsed">
     <i class="fas fa-clock"></i>
@@ -16,36 +17,96 @@
   </div>
   {{/if}}
 
-  <button type="button" class="gmants-hero-of-the-people-primary-btn" data-action="initiate">
-    <i class="fas fa-medal"></i> {{localize "HERO_OF_THE_PEOPLE.Button.Initiate"}}
-  </button>
+  {{!-- ===== RANDOM HERO CARD (shown when not dismissed) ===== --}}
+  {{#unless spotlightDismissed}}
+  <details class="gmants-hero-of-the-people-reminder-card gmants-hero-of-the-people-reminder-card--spotlight" open>
+    <summary>
+      <i class="fas fa-star"></i> {{localize "HERO_OF_THE_PEOPLE.Spotlight.CardTitle"}}
+    </summary>
+    <div class="gmants-hero-of-the-people-reminder-card-body">
+      <div class="gmants-hero-of-the-people-reminder-card-desc">
+        {{localize "HERO_OF_THE_PEOPLE.Spotlight.CardDesc"}}
+      </div>
+      <div class="gmants-hero-of-the-people-spotlight-btn-row">
+        <button type="button" class="gmants-hero-of-the-people-primary-btn gmants-hero-of-the-people-spotlight-spin-btn" data-action="spotlight">
+          <i class="fas fa-star"></i> {{localize "HERO_OF_THE_PEOPLE.Spotlight.RandomHero"}}
+        </button>
+        <button type="button" class="gmants-hero-of-the-people-secondary-btn gmants-hero-of-the-people-hide-btn" data-action="hideSpotlight" title="{{localize "HERO_OF_THE_PEOPLE.Spotlight.HideTitle"}}">
+          <i class="fas fa-eye-slash"></i> {{localize "HERO_OF_THE_PEOPLE.Spotlight.Hide"}}
+        </button>
+      </div>
+      {{!-- Snooze for spotlight card --}}
+      <div class="gmants-hero-of-the-people-section">
+        <div class="gmants-hero-of-the-people-section-header">
+          <label>{{localize "HERO_OF_THE_PEOPLE.Button.Snooze"}}</label>
+        </div>
+        <div class="gmants-hero-of-the-people-snooze-buttons">
+          <button type="button" class="gmants-hero-of-the-people-secondary-btn" data-action="snooze1">
+            {{localize "HERO_OF_THE_PEOPLE.Snooze.1min"}}
+          </button>
+          <button type="button" class="gmants-hero-of-the-people-secondary-btn" data-action="snooze5">
+            {{localize "HERO_OF_THE_PEOPLE.Snooze.5min"}}
+          </button>
+          <button type="button" class="gmants-hero-of-the-people-secondary-btn" data-action="snooze10">
+            {{localize "HERO_OF_THE_PEOPLE.Snooze.10min"}}
+          </button>
+        </div>
+        <div class="gmants-hero-of-the-people-snooze-until-row">
+          <button type="button" class="gmants-hero-of-the-people-secondary-btn" data-action="snoozeUntil">
+            <i class="fas fa-clock"></i> {{localize "HERO_OF_THE_PEOPLE.Snooze.Until"}}
+          </button>
+          <input type="time" class="gmants-hero-of-the-people-snooze-time-input" value="{{snoozeUntilDefault}}" />
+        </div>
+      </div>
+    </div>
+  </details>
+  {{/unless}}
 
-  <div class="gmants-hero-of-the-people-section">
-    <div class="gmants-hero-of-the-people-section-header">
-      <label>{{localize "HERO_OF_THE_PEOPLE.Button.Snooze"}}</label>
+  {{!-- ===== INITIATE VOTE CARD ===== --}}
+  <details class="gmants-hero-of-the-people-reminder-card gmants-hero-of-the-people-reminder-card--vote" {{#if spotlightDismissed}}open{{/if}}>
+    <summary>
+      <i class="fas fa-medal"></i> {{localize "HERO_OF_THE_PEOPLE.Reminder.VoteCardTitle"}}
+    </summary>
+    <div class="gmants-hero-of-the-people-reminder-card-body">
+      <button type="button" class="gmants-hero-of-the-people-primary-btn" data-action="initiate">
+        <i class="fas fa-medal"></i> {{localize "HERO_OF_THE_PEOPLE.Button.Initiate"}}
+      </button>
+      {{!-- Snooze for vote card --}}
+      <div class="gmants-hero-of-the-people-section">
+        <div class="gmants-hero-of-the-people-section-header">
+          <label>{{localize "HERO_OF_THE_PEOPLE.Button.Snooze"}}</label>
+        </div>
+        <div class="gmants-hero-of-the-people-snooze-buttons">
+          <button type="button" class="gmants-hero-of-the-people-secondary-btn" data-action="snooze1">
+            {{localize "HERO_OF_THE_PEOPLE.Snooze.1min"}}
+          </button>
+          <button type="button" class="gmants-hero-of-the-people-secondary-btn" data-action="snooze5">
+            {{localize "HERO_OF_THE_PEOPLE.Snooze.5min"}}
+          </button>
+          <button type="button" class="gmants-hero-of-the-people-secondary-btn" data-action="snooze10">
+            {{localize "HERO_OF_THE_PEOPLE.Snooze.10min"}}
+          </button>
+        </div>
+        <div class="gmants-hero-of-the-people-snooze-until-row">
+          <button type="button" class="gmants-hero-of-the-people-secondary-btn" data-action="snoozeUntil">
+            <i class="fas fa-clock"></i> {{localize "HERO_OF_THE_PEOPLE.Snooze.Until"}}
+          </button>
+          <input type="time" class="gmants-hero-of-the-people-snooze-time-input" value="{{snoozeUntilDefault}}" />
+        </div>
+      </div>
     </div>
-    <div class="gmants-hero-of-the-people-snooze-buttons">
-      <button type="button" class="gmants-hero-of-the-people-secondary-btn" data-action="snooze1">
-        {{localize "HERO_OF_THE_PEOPLE.Snooze.1min"}}
-      </button>
-      <button type="button" class="gmants-hero-of-the-people-secondary-btn" data-action="snooze5">
-        {{localize "HERO_OF_THE_PEOPLE.Snooze.5min"}}
-      </button>
-      <button type="button" class="gmants-hero-of-the-people-secondary-btn" data-action="snooze10">
-        {{localize "HERO_OF_THE_PEOPLE.Snooze.10min"}}
-      </button>
-    </div>
-    <div class="gmants-hero-of-the-people-snooze-until-row">
-      <button type="button" class="gmants-hero-of-the-people-secondary-btn" data-action="snoozeUntil">
-        <i class="fas fa-clock"></i> {{localize "HERO_OF_THE_PEOPLE.Snooze.Until"}}
-      </button>
-      <input type="time" class="gmants-hero-of-the-people-snooze-time-input" value="{{snoozeUntilDefault}}" />
-    </div>
-  </div>
+  </details>
 
+  {{!-- ===== ADVANCED SECTION ===== --}}
   <details class="gmants-hero-of-the-people-advanced">
     <summary><i class="fas fa-cog"></i> {{localize "HERO_OF_THE_PEOPLE.Advanced.Title"}}</summary>
     <div class="gmants-hero-of-the-people-advanced-content">
+      {{!-- Random Hero button (shown here after dismissed from top) --}}
+      {{#if spotlightDismissed}}
+      <button type="button" class="gmants-hero-of-the-people-secondary-btn" data-action="spotlightFromAdvanced">
+        <i class="fas fa-star"></i> {{localize "HERO_OF_THE_PEOPLE.Spotlight.RandomHero"}}
+      </button>
+      {{/if}}
       <button type="button" class="gmants-hero-of-the-people-secondary-btn gmants-hero-of-the-people-skip-btn" data-action="skipSession">
         <i class="fas fa-forward"></i> {{localize "HERO_OF_THE_PEOPLE.Button.SkipSession"}}
       </button>

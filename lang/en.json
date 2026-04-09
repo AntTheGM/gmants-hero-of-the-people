@@ -108,5 +108,11 @@
   "HERO_OF_THE_PEOPLE.Spotlight.Spinning": "Spinning...",
   "HERO_OF_THE_PEOPLE.Spotlight.Award": "Award & Close",
   "HERO_OF_THE_PEOPLE.Spotlight.ChatHeader": "Spotlight Roulette!",
+  "HERO_OF_THE_PEOPLE.Spotlight.CardTitle": "Random Hero",
+  "HERO_OF_THE_PEOPLE.Spotlight.CardDesc": "Spin the spotlight roulette to randomly award a hero at the start of the session!",
+  "HERO_OF_THE_PEOPLE.Spotlight.RandomHero": "Random Hero",
+  "HERO_OF_THE_PEOPLE.Spotlight.Hide": "Hide",
+  "HERO_OF_THE_PEOPLE.Spotlight.HideTitle": "Hide for this session",
+  "HERO_OF_THE_PEOPLE.Reminder.VoteCardTitle": "Initiate Vote",
   "HERO_OF_THE_PEOPLE.Error.InitiateVote": "Hero of the People: Error initiating vote. Check console (F12)."
 }

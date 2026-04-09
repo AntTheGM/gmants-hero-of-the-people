@@ -103,6 +103,13 @@ export function registerSettings() {
     type: Object,
   });
 
+  game.settings.register(MODULE_ID, "spotlightDismissed", {
+    scope: "world",
+    config: false,
+    default: false,
+    type: Boolean,
+  });
+
   game.settings.register(MODULE_ID, "spotlightPosition", {
     scope: "client",
     config: false,

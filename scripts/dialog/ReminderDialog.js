@@ -4,6 +4,7 @@ const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
 /**
  * Small GM-only dialog that prompts to initiate a hero vote or snooze.
+ * Features two collapsible cards: Random Hero (spotlight) and Initiate Vote.
  */
 export class ReminderDialog extends HandlebarsApplicationMixin(ApplicationV2) {
   static DEFAULT_OPTIONS = {
@@ -14,8 +15,11 @@ export class ReminderDialog extends HandlebarsApplicationMixin(ApplicationV2) {
       icon: "fas fa-medal",
       resizable: false,
     },
-    position: { width: 360, height: "auto" },
+    position: { width: 380, height: "auto" },
     actions: {
+      spotlight: ReminderDialog.#onSpotlight,
+      hideSpotlight: ReminderDialog.#onHideSpotlight,
+      spotlightFromAdvanced: ReminderDialog.#onSpotlightFromAdvanced,
       initiate: ReminderDialog.#onInitiate,
       snooze1: ReminderDialog.#onSnooze1,
       snooze5: ReminderDialog.#onSnooze5,
@@ -37,6 +41,9 @@ export class ReminderDialog extends HandlebarsApplicationMixin(ApplicationV2) {
   #onInitiateCallback;
 
   /** @type {Function} */
+  #onSpotlightCallback;
+
+  /** @type {Function} */
   #onSnoozeCallback;
 
   /** @type {Function} */
@@ -54,6 +61,7 @@ export class ReminderDialog extends HandlebarsApplicationMixin(ApplicationV2) {
   /**
    * @param {object} callbacks
    * @param {Function} callbacks.onInitiate - Called when GM clicks "Initiate Vote"
+   * @param {Function} callbacks.onSpotlight - Called when GM clicks "Random Hero"
    * @param {Function} callbacks.onSnooze - Called with minutes when GM snoozes
    * @param {Function} callbacks.onSkip - Called when GM skips rest of session
    * @param {string} [callbacks.elapsed] - Elapsed time since last vote or session start
@@ -63,6 +71,7 @@ export class ReminderDialog extends HandlebarsApplicationMixin(ApplicationV2) {
   constructor(callbacks) {
     super();
     this.#onInitiateCallback = callbacks.onInitiate;
+    this.#onSpotlightCallback = callbacks.onSpotlight;
     this.#onSnoozeCallback = callbacks.onSnooze;
     this.#onSkipCallback = callbacks.onSkip;
     this.#elapsed = callbacks.elapsed ?? "";
@@ -92,6 +101,8 @@ export class ReminderDialog extends HandlebarsApplicationMixin(ApplicationV2) {
       context.systemId = "dnd5e";
       context.systemLabel = "D&D 5e";
     }
+    // Spotlight state
+    context.spotlightDismissed = game.settings.get(MODULE_ID, "spotlightDismissed");
     return context;
   }
 
@@ -126,6 +137,29 @@ export class ReminderDialog extends HandlebarsApplicationMixin(ApplicationV2) {
     brand.target = "_blank";
     brand.rel = "noopener";
     header.insertBefore(brand, header.lastElementChild);
+  }
+
+  /** Dismiss the spotlight card from the top and move it into Advanced. */
+  async #dismissSpotlight() {
+    await game.settings.set(MODULE_ID, "spotlightDismissed", true);
+    // Re-render to reflect the new layout
+    this.render(true);
+  }
+
+  static #onSpotlight(event, target) {
+    this.#dismissSpotlight().then(() => {
+      this.#onSpotlightCallback();
+      this.close();
+    });
+  }
+
+  static #onHideSpotlight(event, target) {
+    this.#dismissSpotlight();
+  }
+
+  static #onSpotlightFromAdvanced(event, target) {
+    this.#onSpotlightCallback();
+    this.close();
   }
 
   static #onInitiate(event, target) {

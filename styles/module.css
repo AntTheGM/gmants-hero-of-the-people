@@ -202,6 +202,99 @@ a.gmants-hero-of-the-people-branding:hover {
   margin-top: 0;
 }
 
+/* --- Reminder Dialog: Collapsible Cards --- */
+.gmants-hero-of-the-people-reminder-card {
+  border: 1px solid var(--gmants-hero-of-the-people-border);
+  border-radius: 6px;
+  background: var(--gmants-hero-of-the-people-bg-faint);
+  overflow: hidden;
+}
+
+.gmants-hero-of-the-people-reminder-card > summary {
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 0.9rem;
+  padding: 0.5rem 0.65rem;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: background 0.15s;
+}
+
+.gmants-hero-of-the-people-reminder-card > summary:hover {
+  background: var(--gmants-hero-of-the-people-bg-hover);
+}
+
+.gmants-hero-of-the-people-reminder-card > summary::-webkit-details-marker {
+  display: none;
+}
+
+.gmants-hero-of-the-people-reminder-card > summary::before {
+  content: "\f0da";
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  display: inline-block;
+  width: 0.8em;
+  transition: transform 0.15s;
+  font-size: 0.75rem;
+  opacity: 0.5;
+}
+
+.gmants-hero-of-the-people-reminder-card[open] > summary::before {
+  transform: rotate(90deg);
+}
+
+.gmants-hero-of-the-people-reminder-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0 0.65rem 0.65rem;
+}
+
+.gmants-hero-of-the-people-reminder-card-desc {
+  font-size: 0.8rem;
+  font-style: italic;
+  opacity: 0.7;
+}
+
+/* Spotlight card accent */
+.gmants-hero-of-the-people-reminder-card--spotlight > summary i {
+  color: var(--gmants-hero-of-the-people-gold);
+}
+
+.gmants-hero-of-the-people-reminder-card--spotlight {
+  border-color: rgba(184, 134, 11, 0.25);
+}
+
+/* Vote card accent */
+.gmants-hero-of-the-people-reminder-card--vote > summary i {
+  color: var(--gmants-hero-of-the-people-gold);
+}
+
+/* Spotlight button row: spin + hide side by side */
+.gmants-hero-of-the-people-spotlight-btn-row {
+  display: flex;
+  gap: 0.35rem;
+  align-items: stretch;
+}
+
+.gmants-hero-of-the-people-spotlight-btn-row .gmants-hero-of-the-people-spotlight-spin-btn {
+  flex: 1;
+  margin-top: 0;
+}
+
+.gmants-hero-of-the-people-hide-btn {
+  flex-shrink: 0;
+  font-size: 0.75rem !important;
+  padding: 0.35rem 0.5rem !important;
+  opacity: 0.6;
+}
+
+.gmants-hero-of-the-people-hide-btn:hover {
+  opacity: 1;
+}
+
 /* --- Reminder Dialog --- */
 .gmants-hero-of-the-people-reminder-quote {
   text-align: center;

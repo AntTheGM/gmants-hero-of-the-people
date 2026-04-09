@@ -54,6 +54,7 @@ Hooks.once("ready", async () => {
       await game.settings.set(MODULE_ID, "sessionStartTime", Date.now());
       await game.settings.set(MODULE_ID, "sessionWinners", []);
       await game.settings.set(MODULE_ID, "lastVoteTime", 0);
+      await game.settings.set(MODULE_ID, "spotlightDismissed", false);
     }
   }
 
@@ -155,6 +156,7 @@ function openReminderDialog({ fromTimer = false } = {}) {
     hasVoted,
     nextFireTime: reminderTimer.nextFireTime,
     onInitiate: () => initiateVote(),
+    onSpotlight: () => openSpotlightDialog(),
     onSnooze: (minutes) => reminderTimer.snooze(minutes),
     onSkip: () => reminderTimer.skipSession(),
   }).render(true);
