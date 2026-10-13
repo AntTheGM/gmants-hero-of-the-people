@@ -361,8 +361,9 @@ function openSpotlightDialog() {
       const actor = game.actors.get(actorId);
       const winnerName = actor?.name ?? "Unknown";
 
+      // Spotlight winners are not tracked as session winners — a random award
+      // must not lock them out of later votes (only being at max does).
       const awardType = await awardHeroPoint(actorId);
-      await trackSessionWinner(actorId);
       await postSpotlightChat({ winnerId: actorId, winnerName, awardType });
 
       // Play golden star-burst on the winner's token (no-op if not on scene)
